@@ -70,3 +70,12 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Assets/AssetBundles/
+Assets/Blink/
+Assets/Excluded/
+Assets/FantasyIconsPackFree/
+Assets/Gentleland/SteampunkUI/Art.meta
+Assets/Gentleland/
+Assets/GentlelandSettings/
+Assets/StreamingAssets/AssetBundles
+Assets/StreamingAssets/
