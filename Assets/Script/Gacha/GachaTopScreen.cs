@@ -1,0 +1,81 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using System;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+
+//日本語対応
+public class GachaTopScreen : MonoBehaviour, IScreenController
+{
+    [SerializeField]
+    private Button _showCheckGachaButton = default;
+
+    [SerializeField]
+    private Button _doGachaButton = default;
+
+    [SerializeField]
+    private GameObject _gachaStagingScreen = default;
+
+    [SerializeField]
+    private GameObject _gachaResultScreen = default;
+
+    [SerializeField]
+    private Image _checkDoGachaPanel = default;
+
+    [SerializeField]
+    private LoadAssetData _loadAssetData = default;
+
+
+    private void OnEnable()
+    {
+        Initialize();
+    }
+    private void OnDisable()
+    {
+        Release();
+        _checkDoGachaPanel.gameObject.SetActive(false);
+    }
+    public void Initialize()
+    {
+        _checkDoGachaPanel.gameObject.SetActive(false);
+        _gachaStagingScreen.gameObject.SetActive(false);
+        gameObject.SetActive(true);
+
+        Subscribe();
+    }
+    public void Subscribe()
+    {
+        _showCheckGachaButton.onClick.AddListener(ShowCheckGachaPanel);
+        _doGachaButton.onClick.AddListener(() => GoNext().Forget());
+    }
+
+    public void Release()
+    {
+        _showCheckGachaButton.onClick.RemoveAllListeners();
+        _doGachaButton.onClick.RemoveAllListeners();
+    }
+
+    public void BackPrevious()
+    {
+
+    }
+    private void ShowCheckGachaPanel()
+    {
+        _checkDoGachaPanel.gameObject.SetActive(true);
+    }
+
+    public async UniTask GoNext()
+    {
+        gameObject.SetActive(false);
+        _gachaStagingScreen.SetActive(true);
+        // await UniTask.Delay(TimeSpan.FromSeconds(1));
+        await _loadAssetData.DataPreparation();
+    }
+
+    void IScreenController.GoNext()
+    {
+        throw new NotImplementedException();
+    }
+}
