@@ -19,7 +19,10 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     private Button _goHome = default;
 
     [SerializeField]
-    private int _awaitTime = default;
+    private float _firstAwaitTime = 0.5f;
+
+    [SerializeField]
+    private float _awaitTime = default;
 
     [SerializeField]
     private LoadAssetData _loadAssetData = default;
@@ -44,6 +47,8 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     }
     public void Initialize()
     {
+        _awaitTime = _firstAwaitTime;
+        _skipButton.gameObject.SetActive(true);
         _firstCanvas.gameObject.SetActive(false);
         _goHome.gameObject.SetActive(false);
         Subscribe();
@@ -51,13 +56,13 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     }
     public void Subscribe()
     {
-        // _skipButton.onClick.AddListener(Skip);
+        _skipButton.onClick.AddListener(Skip);
         _goHome.onClick.AddListener(GoNext);
     }
 
     public void Release()
     {
-        // _skipButton.onClick.RemoveAllListeners();
+        _skipButton.onClick.RemoveAllListeners();
         _goHome.onClick.RemoveAllListeners();
     }
 
@@ -90,7 +95,7 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
             }
             _imagesList[i].sprite = _loadAssetData.SpritesList[i];
             Debug.Log(_loadAssetData.SpritesList[i]);
-            await UniTask.Delay(TimeSpan.FromSeconds(1f));
+            await UniTask.Delay(TimeSpan.FromSeconds(_awaitTime));
         }
         _goHome.gameObject.SetActive(true);
     }
@@ -108,7 +113,8 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
 
     public void Skip()
     {
-        _awaitTime = 0;
+        _awaitTime = 0.2f;
+        _skipButton.gameObject.SetActive(false);
     }
 
 }
