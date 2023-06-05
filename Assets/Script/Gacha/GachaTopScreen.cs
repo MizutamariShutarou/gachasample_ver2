@@ -27,6 +27,8 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
     [SerializeField]
     private LoadAssetData _loadAssetData = default;
 
+    private CancellationTokenSource _cts = default;
+
 
     private void OnEnable()
     {
@@ -39,6 +41,7 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
     }
     public void Initialize()
     {
+        _cts = new CancellationTokenSource();
         _checkDoGachaPanel.gameObject.SetActive(false);
         _gachaStagingScreen.gameObject.SetActive(false);
         gameObject.SetActive(true);
@@ -48,13 +51,14 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
     public void Subscribe()
     {
         _showCheckGachaButton.onClick.AddListener(ShowCheckGachaPanel);
-        _doGachaButton.onClick.AddListener(() => GoNext().Forget());
+        _doGachaButton.onClick.AddListener(() => GoNext(_cts.Token).Forget());
     }
 
     public void Release()
     {
         _showCheckGachaButton.onClick.RemoveAllListeners();
         _doGachaButton.onClick.RemoveAllListeners();
+        _cts?.Cancel();
     }
 
     public void BackPrevious()
@@ -66,12 +70,12 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
         _checkDoGachaPanel.gameObject.SetActive(true);
     }
 
-    public async UniTask GoNext()
+    public async UniTask GoNext(CancellationToken cancellationToken)
     {
         gameObject.SetActive(false);
         _gachaStagingScreen.SetActive(true);
         // await UniTask.Delay(TimeSpan.FromSeconds(1));
-        await _loadAssetData.DataPreparation();
+        await _loadAssetData.DataPreparation(cancellationToken);
     }
 
     void IScreenController.GoNext()
