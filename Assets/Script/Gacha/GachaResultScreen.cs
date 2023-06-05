@@ -36,6 +36,8 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     [SerializeField]
     GameObject _gachaTopScreen = default;
 
+    private CancellationTokenSource _cts = default;
+
     private void OnEnable()
     {
         Initialize();
@@ -45,14 +47,15 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     {
         Release();
     }
-    public void Initialize()
+    public async void Initialize()
     {
+        _cts = new CancellationTokenSource();
         _awaitTime = _firstAwaitTime;
         _skipButton.gameObject.SetActive(true);
         _firstCanvas.gameObject.SetActive(false);
         _goHome.gameObject.SetActive(false);
         Subscribe();
-        ShowResult();
+        await ShowResult(_cts.Token);
     }
     public void Subscribe()
     {
@@ -64,6 +67,7 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     {
         _skipButton.onClick.RemoveAllListeners();
         _goHome.onClick.RemoveAllListeners();
+        _cts?.Cancel();
     }
 
     public void BackPrevious()
@@ -75,11 +79,10 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
     {
         gameObject.SetActive(false);
         _gachaTopScreen.SetActive(true);
-        _loadAssetData.AsstsBundles.Weapon.Unload(true);
-        _loadAssetData.AsstsBundles.WeaponObj.Unload(true);
+        _loadAssetData.UnLoadAsset();
     }
 
-    private async void ShowResult()
+    private async UniTask ShowResult(CancellationToken cancellationToken)
     {
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         for (int i = 0; i < _loadAssetData.Num; i++)
@@ -91,7 +94,7 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
              
                 _firstWeaponObj = _loadAssetData.GameObjectsList[i].gameObject;
 
-                await ShowFirstStage();
+                await ShowFirstStage(cancellationToken);
             }
             _imagesList[i].sprite = _loadAssetData.SpritesList[i];
             Debug.Log(_loadAssetData.SpritesList[i]);
@@ -100,7 +103,7 @@ public class GachaResultScreen : MonoBehaviour, IScreenController
         _goHome.gameObject.SetActive(true);
     }
 
-    private async UniTask ShowFirstStage()
+    private async UniTask ShowFirstStage(CancellationToken ct)
     {
         _firstCanvas.gameObject.SetActive(true);
         await UniTask.Delay(TimeSpan.FromSeconds(1f));

@@ -15,7 +15,7 @@ public class GachaStagingScreen : MonoBehaviour, IScreenController
     [SerializeField]
     private Animation _gachaAnim = default;
 
-    private CancellationTokenSource _cts;
+    private CancellationTokenSource _cts = default;
 
     [SerializeField]
     private LoadAssetData _loadAssetData = default;
@@ -62,13 +62,14 @@ public class GachaStagingScreen : MonoBehaviour, IScreenController
     public void Release()
     {
         _tapButton.onClick.RemoveAllListeners();
+        _cts?.Cancel();
     }
 
     private async UniTask ActiveGachaAnim(CancellationToken cancellationToken)
     {
         // _tapButton.gameObject.SetActive(false);
         _gachaAnim.gameObject.SetActive(true);
-        await _loadAssetData.LoadAssets(_cts.Token);
+        await _loadAssetData.LoadAssets(cancellationToken);
         gameObject.SetActive(false);
         _gachaResultScreen.SetActive(true);
     }
