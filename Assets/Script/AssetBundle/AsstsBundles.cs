@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using StoringPlace;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 //日本語対応
 public class AsstsBundles
@@ -13,7 +15,7 @@ public class AsstsBundles
     private AssetBundle _bow = default;
     private AssetBundle _gloves = default;
     private AssetBundle _helmet = default;
-    private AssetBundle _weapon = default;
+    private AssetBundle _weaponIcon = default;
     private AssetBundle _weaponObj = default;
     public AssetBundle Armor => _armor;
     public AssetBundle Arrow => _arrow;
@@ -21,7 +23,7 @@ public class AsstsBundles
     public AssetBundle Bow => _bow;
     public AssetBundle Gloves => _gloves;
     public AssetBundle Helmet => _helmet;
-    public AssetBundle Weapon => _weapon;
+    public AssetBundle WeaponIcon => _weaponIcon;
     public AssetBundle WeaponObj => _weaponObj;
 
     //TODO:重くて固まるから改良をする
@@ -33,18 +35,26 @@ public class AsstsBundles
         //_bow = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.BOW));
         //_gloves = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.GLOVES));
         //_helmet = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.HELMET));
+    }
+
+    public async UniTask LoadWeaponIcon(CancellationToken ct)
+    {
         var weaponIconAssetBundleRequest
             = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPON));
 
-        _weapon = weaponIconAssetBundleRequest.assetBundle;
+        _weaponIcon = weaponIconAssetBundleRequest.assetBundle;
 
         // _weapon = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPON));
-        Debug.Log("weapon読み込み完了");
+        await UniTask.CompletedTask;
+    }
 
-         var weaponObjAssetBundleRequest
-            = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPONOBJ));
+    public async UniTask LoadWeaponObj(CancellationToken ct)
+    {
+        var weaponObjAssetBundleRequest
+           = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPONOBJ));
 
         _weaponObj = weaponObjAssetBundleRequest.assetBundle;
-        Debug.Log("weaponObj読み込み完了");
+
+        await UniTask.CompletedTask;
     }
 }

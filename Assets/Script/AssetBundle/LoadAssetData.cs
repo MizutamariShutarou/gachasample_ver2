@@ -29,46 +29,59 @@ public class LoadAssetData : MonoBehaviour
 
     private List<GameObject> _gameObjectsList = default;
 
-    private List<bool> _boolList = default;
-
     public List<Sprite> SpritesList => _spritesList;
 
     public List<GameObject> GameObjectsList => _gameObjectsList;
-
-    public List<bool> BoolList => _boolList;
     
-    public async UniTask DataPreparation()
+    public async UniTask DataPreparation(CancellationToken ct)
     {
-        try
+        //try
+        //{
+        //    _assetsBundles = new AsstsBundles();
+        //}
+        //catch(System.NullReferenceException e)
+        //{
+        //    Debug.LogException(e);
+        //    _alertpanel.SetActive(true);
+        //}
+        //finally
+        //{
+        //    Debug.Log("何か処理があれば書きたい");
+        //    _spritesList = new List<Sprite>(_num);
+        //    _gameObjectsList = new List<GameObject>(_num);
+        //    _boolList = new List<bool>(_num);
+        //    await UniTask.CompletedTask;
+        //}
+        _assetsBundles = new AsstsBundles();
+
+        // await _assetsBundles.Load();
+        await _assetsBundles.LoadWeaponIcon(ct);
+        Debug.Log("weaponIcon取得");
+        await _assetsBundles.LoadWeaponObj(ct);
+        Debug.Log("weaponObj取得");
+
+        if (_assetsBundles.WeaponIcon == null || _assetsBundles.WeaponObj == null)
         {
-            _assetsBundles = new AsstsBundles();
+            Debug.Log("Failed to load AssetBundle!");
+            _alertpanel.gameObject.SetActive(true);
+            return;
         }
-        catch(System.NullReferenceException e)
+        else
         {
-            Debug.LogException(e);
-            _alertpanel.SetActive(true);
-        }
-        finally
-        {
-            Debug.Log("何か処理があれば書きたい");
             _spritesList = new List<Sprite>(_num);
             _gameObjectsList = new List<GameObject>(_num);
-            _boolList = new List<bool>(_num);
-            await UniTask.CompletedTask;
         }
+
+        await UniTask.CompletedTask;
     }
 
-    public async UniTask LoadAssets(CancellationToken cts)
+    public async UniTask LoadAssets(CancellationToken ct)
     {
         for(int i = 0; i < _num; i++)
         {
             var randomNom = Random.Range(0, _weaponDataList.Count);
 
-            bool isForFirstTime = _weaponDataList[randomNom]._isFirst;
-
-            _boolList.Add(isForFirstTime);
-
-            var sprite = _assetsBundles.Weapon.LoadAsset<Sprite>(_weaponDataList[randomNom]._iconName);
+            var sprite = _assetsBundles.WeaponIcon.LoadAsset<Sprite>(_weaponDataList[randomNom]._iconName);
 
             _spritesList.Add(sprite);
 
@@ -81,7 +94,7 @@ public class LoadAssetData : MonoBehaviour
 
     public void UnLoadAsset()
     {
-        _assetsBundles.Weapon.Unload(true);
+        _assetsBundles.WeaponIcon.Unload(true);
         _assetsBundles.WeaponObj.Unload(true);
     }
 }
