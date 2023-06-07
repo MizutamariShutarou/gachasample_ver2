@@ -23,6 +23,9 @@ public class GachaStagingScreen : MonoBehaviour, IScreenController
     [SerializeField]
     private GameObject _gachaResultScreen = default;
 
+    [SerializeField]
+    private GachaTopScreen _gachaTopScreen = default;
+
     private void OnEnable()
     {
         Initialize();
@@ -53,6 +56,7 @@ public class GachaStagingScreen : MonoBehaviour, IScreenController
         _tapButton.gameObject.SetActive(false);
         await UniTask.Delay(TimeSpan.FromSeconds(2));
         await ActiveGachaAnim(_cts.Token);
+        await _gachaTopScreen.GoNext(_cts.Token);
     }
     public void Subscribe()
     {

@@ -75,7 +75,8 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
         gameObject.SetActive(false);
         _gachaStagingScreen.SetActive(true);
         // await UniTask.Delay(TimeSpan.FromSeconds(1));
-        await _loadAssetData.DataPreparation(cancellationToken);
+        _loadAssetData.DataPreparation(cancellationToken).Forget();
+        await UniTask.CompletedTask;
     }
 
     void IScreenController.GoNext()
