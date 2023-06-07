@@ -55,9 +55,9 @@ public class LoadAssetData : MonoBehaviour
         _assetsBundles = new AsstsBundles();
 
         // await _assetsBundles.Load();
-        await _assetsBundles.LoadWeaponIcon(ct);
+        _assetsBundles.LoadWeaponIcon(ct).Forget();
         Debug.Log("weaponIcon取得");
-        await _assetsBundles.LoadWeaponObj(ct);
+        _assetsBundles.LoadWeaponObj(ct).Forget();
         Debug.Log("weaponObj取得");
 
         if (_assetsBundles.WeaponIcon == null || _assetsBundles.WeaponObj == null)
