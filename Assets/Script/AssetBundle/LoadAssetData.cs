@@ -75,7 +75,7 @@ public class LoadAssetData : MonoBehaviour
         await UniTask.CompletedTask;
     }
 
-    public async UniTask LoadAssets(CancellationToken ct)
+    public async UniTask LoadAssets()
     {
         for(int i = 0; i < _num; i++)
         {
