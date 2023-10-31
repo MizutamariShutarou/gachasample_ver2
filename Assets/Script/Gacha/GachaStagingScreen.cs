@@ -23,9 +23,6 @@ public class GachaStagingScreen : MonoBehaviour, IScreenController
     [SerializeField]
     private GameObject _gachaResultScreen = default;
 
-    [SerializeField]
-    private GachaTopScreen _gachaTopScreen = default;
-
     private void OnEnable()
     {
         Initialize();
