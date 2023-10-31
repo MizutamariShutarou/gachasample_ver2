@@ -51,7 +51,7 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
     public void Subscribe()
     {
         _showCheckGachaButton.onClick.AddListener(ShowCheckGachaPanel);
-        _doGachaButton.onClick.AddListener(() => GoNext(_cts.Token).Forget());
+        _doGachaButton.onClick.AddListener(() => GoNext(_cts.Token));
     }
 
     public void Release()
@@ -70,12 +70,12 @@ public class GachaTopScreen : MonoBehaviour, IScreenController
         _checkDoGachaPanel.gameObject.SetActive(true);
     }
 
-    public async UniTask GoNext(CancellationToken cancellationToken)
+    public async void GoNext(CancellationToken cancellationToken)
     {
         gameObject.SetActive(false);
         _gachaStagingScreen.SetActive(true);
+        await _loadAssetData.DataPreparation(cancellationToken);
         // await UniTask.Delay(TimeSpan.FromSeconds(1));
-        _loadAssetData.DataPreparation(cancellationToken).Forget();
         await UniTask.CompletedTask;
     }
 

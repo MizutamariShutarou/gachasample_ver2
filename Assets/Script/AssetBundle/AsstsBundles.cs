@@ -26,29 +26,17 @@ public class AsstsBundles
     public AssetBundle WeaponIcon => _weaponIcon;
     public AssetBundle WeaponObj => _weaponObj;
 
-    //TODO:重くて固まるから改良をする
-    public AsstsBundles()
-    {
-        //_armor = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.ARMOR));
-        //_arrow = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.ARROW));
-        //_boots = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.BOOTS));
-        //_bow = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.BOW));
-        //_gloves = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.GLOVES));
-        //_helmet = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.HELMET));
-    }
-
-    public async UniTask LoadWeaponIcon(CancellationToken ct)
+    public async UniTask LoadWeaponIcon()
     {
         var weaponIconAssetBundleRequest
             = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPON));
 
         _weaponIcon = weaponIconAssetBundleRequest.assetBundle;
 
-        // _weapon = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPON));
         await UniTask.CompletedTask;
     }
 
-    public async UniTask LoadWeaponObj(CancellationToken ct)
+    public async UniTask LoadWeaponObj()
     {
         var weaponObjAssetBundleRequest
            = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPONOBJ));
