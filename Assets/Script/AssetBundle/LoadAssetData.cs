@@ -35,26 +35,8 @@ public class LoadAssetData : MonoBehaviour
     
     public async UniTask DataPreparation(CancellationToken ct)
     {
-        //try
-        //{
-        //    _assetsBundles = new AsstsBundles();
-        //}
-        //catch(System.NullReferenceException e)
-        //{
-        //    Debug.LogException(e);
-        //    _alertpanel.SetActive(true);
-        //}
-        //finally
-        //{
-        //    Debug.Log("何か処理があれば書きたい");
-        //    _spritesList = new List<Sprite>(_num);
-        //    _gameObjectsList = new List<GameObject>(_num);
-        //    _boolList = new List<bool>(_num);
-        //    await UniTask.CompletedTask;
-        //}
         _assetsBundles = new AsstsBundles();
 
-        // await _assetsBundles.Load();
         _assetsBundles.LoadWeaponIcon(ct).Forget();
         Debug.Log("weaponIcon取得");
         _assetsBundles.LoadWeaponObj(ct).Forget();
