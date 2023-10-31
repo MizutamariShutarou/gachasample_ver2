@@ -58,14 +58,12 @@ public class WindowController : MonoBehaviour
     public void Subscribe()
     {
         _homeButton.onClick.AddListener(OnHomeButtonClicked);
-        // _mainUIView.QuestButton.onClick.AddListener(OnQuestButtonClicked);
         _gachaButton.onClick.AddListener(OnGachaButtonClicked);
     }
 
     public void Release()
     {
         _homeButton.onClick.RemoveAllListeners();
-        // _mainUIView.QuestButton.onClick.RemoveAllListeners();
         _gachaButton.onClick.RemoveAllListeners();
     }
     public void OnChangeWindow(GameObject old, GameObject next)
@@ -83,15 +81,6 @@ public class WindowController : MonoBehaviour
         }
         OnChangeWindow(_nowWindow, _homeWindow);
     }
-
-    //private void OnQuestButtonClicked()
-    //{
-    //    if (_mainUIView.NowWindow == _mainUIView.HomeWindow)
-    //    {
-    //        return;
-    //    }
-    //    _mainUIView.OnChangeWindow(_mainUIView.NowWindow, _mainUIView.HomeWindow);
-    //}
 
     private void OnGachaButtonClicked()
     {

@@ -33,7 +33,7 @@ public class LoadAssetData : MonoBehaviour
 
     public List<GameObject> GameObjectsList => _gameObjectsList;
     
-    public async UniTask DataPreparation(CancellationToken ct)
+    public async UniTask DataPreparation()
     {
         _assetsBundles = new AsstsBundles();
 
