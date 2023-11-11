@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,7 +30,7 @@ public abstract class ViewBase : MonoBehaviour
             popped => ExitRoutine(state, popped)
         );
     }
-    protected abstract IEnumerator EnterRoutine(Navigation.State state, bool popped);
+    protected abstract UniTask EnterRoutine(Navigation.State state, bool popped);
 
-    protected abstract IEnumerator ExitRoutine(Navigation.State state, bool popped);
+    protected abstract UniTask ExitRoutine(Navigation.State state, bool popped);
 }
