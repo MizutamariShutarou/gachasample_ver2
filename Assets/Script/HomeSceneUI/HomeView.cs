@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,17 +11,17 @@ public class HomeView : ViewBase
     {
         Initialize(Navigation.State.Home);
     }
-    protected override IEnumerator EnterRoutine(Navigation.State state, bool popped)
+    protected override async UniTask EnterRoutine(Navigation.State state, bool popped)
     {
         Debug.Log(state + " : ロード処理など" + (popped ? " (pop)" : ""));
-        yield return new WaitForSeconds(1.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
         Debug.Log(state + " : ページに入るアニメーションなど" + (popped ? " (pop)" : ""));
-        yield return new WaitForSeconds(1.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
     }
 
-    protected override IEnumerator ExitRoutine(Navigation.State state, bool popped)
+    protected override async UniTask ExitRoutine(Navigation.State state, bool popped)
     {
         Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
-        yield return new WaitForSeconds(1.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
     }
 }
