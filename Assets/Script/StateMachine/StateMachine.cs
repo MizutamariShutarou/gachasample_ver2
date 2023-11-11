@@ -3,14 +3,18 @@ using System.Collections;
 using System.Linq;
 using System;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
+using System.Threading.Tasks;
+using System.Threading;
 
 // 各State毎のdelagateを登録しておくクラス
 public class StateMapping
 {
     public Action onEnter = default;
-    public Func<IEnumerator> EnterRoutine = default;
+    public Func<UniTask> EnterRoutine = default;
     public Action onExit = default;
-    public Func<IEnumerator> ExitRoutine = default;
+    public Func<UniTask> ExitRoutine = default;
     public Action<float> onUpdate = default;
 }
 
@@ -65,14 +69,14 @@ public class StateMachine<TState, TTrigger>
     /// <summary>
     /// トリガーを実行する
     /// </summary>
-    public bool ExecuteTrigger(TTrigger trigger)
+    public async UniTask<bool> ExecuteTriggerAsync(TTrigger trigger)
     {
         var transitions = _transitionLists[_stateType];
         foreach (var transition in transitions)
         {
             if (transition.Trigger.Equals(trigger))
             {
-                _monoBehaviour.StartCoroutine(ChangeState(transition.To));
+                await ChangeState(transition.To);
                 return true;
             }
         }
@@ -82,7 +86,7 @@ public class StateMachine<TState, TTrigger>
     /// <summary>
     /// 遷移情報を登録する
     /// </summary>
-    public void AddTransition(TState from, TState to, TTrigger trigger)
+    public void AddTransition(TState from, TState to, TTrigger trigger, TTrigger? otherTrigger = null)
     {
         if (!_transitionLists.ContainsKey(from))
         {
@@ -93,7 +97,10 @@ public class StateMachine<TState, TTrigger>
         if (transition == null)
         {
             // 新規登録
-            transitions.Add(new Transition<TState, TTrigger> { To = to, Trigger = trigger });
+            transitions.Add(new Transition<TState, TTrigger> { To = to, Trigger = trigger});
+
+            if (otherTrigger == null) return;
+            transitions.Add(new Transition<TState, TTrigger> { To = to, Trigger = (TTrigger)otherTrigger });
         }
         else
         {
@@ -106,7 +113,7 @@ public class StateMachine<TState, TTrigger>
     /// <summary>
     /// Stateを初期化する
     /// </summary>
-    public void SetupState(TState state, Action onEnter = null, Func<IEnumerator> enterRoutine = null, Action onExit = null, Func<IEnumerator> exitRoutine = null, Action<float> onUpdate = null)
+    public void SetupState(TState state, Action onEnter = null, Func<UniTask> enterRoutine = null, Action onExit = null, Func<UniTask> exitRoutine = null, Action<float> onUpdate = null)
     {
         var stateMapping = _stateMappings[state];
         stateMapping.onEnter = onEnter;
@@ -158,19 +165,21 @@ public class StateMachine<TState, TTrigger>
     /// <summary>
     /// Stateを変更する
     /// </summary>
-    private IEnumerator ChangeState(TState to)
+    private async UniTask ChangeState(TState to)
     {
         if (_inEnterTransition)
         {
             // Enter遷移中だったら何もせずbreak（状態遷移失敗）
-            yield break;
+            Debug.Log($"{to}へのEnter遷移中です。完了するまでお待ちください。");
+            return;
         }
 
         _destinationState = to;
         if (_inExitTransition)
         {
             // Exit遷移中だったら遷移先を上書きしてbreak
-            yield break;
+            Debug.Log($"{to}のExit遷移中です。完了するまでお待ちください。");
+            return;
         }
 
         // Exit
@@ -179,7 +188,7 @@ public class StateMachine<TState, TTrigger>
         {
             if (_stateMapping.ExitRoutine != null)
             {
-                yield return _monoBehaviour.StartCoroutine(_stateMapping.ExitRoutine());
+                await _stateMapping.ExitRoutine();
             }
             if (_stateMapping.onExit != null)
             {
@@ -193,7 +202,7 @@ public class StateMachine<TState, TTrigger>
         var stateMapping = _stateMappings[_destinationState.Value];
         if (stateMapping.EnterRoutine != null)
         {
-            yield return stateMapping.EnterRoutine();
+            await stateMapping.EnterRoutine();
         }
         if (stateMapping.onEnter != null)
         {

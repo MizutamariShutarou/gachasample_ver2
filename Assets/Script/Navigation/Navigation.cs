@@ -1,6 +1,8 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 //日本語対応
@@ -35,6 +37,7 @@ public class Navigation : MonoBehaviour
 
     private bool _isInitialized = false;
 
+
     public void Initialize()
     {
         if (_isInitialized) return;
@@ -44,7 +47,7 @@ public class Navigation : MonoBehaviour
 
         // 遷移情報を登録
         _stateMachine.AddTransition(State.Home, State.GachaTop, Trigger.TapEnterGachaPage);
-        _stateMachine.AddTransition(State.GachaTop, State.Home, Trigger.PageBack);
+        _stateMachine.AddTransition(State.GachaTop, State.Home, Trigger.PageBack, Trigger.TapHomePage);
         _stateMachine.AddTransition(State.GachaTop, State.GachaStaging, Trigger.TapGachaButton);
         _stateMachine.AddTransition(State.GachaStaging, State.GachaResult, Trigger.FinishStaging);
         _stateMachine.AddTransition(State.GachaResult, State.GachaTop, Trigger.PageBack);
@@ -61,8 +64,8 @@ public class Navigation : MonoBehaviour
     /// <summary>
     /// Stateのふるまいを設定する
     /// </summary>
-    public void SetupState(State state, Action<bool> onEnter = null, Func<bool, IEnumerator> enterRoutine = null
-        , Action<bool> onExit = null, Func<bool, IEnumerator> exitRoutine = null, Action<bool, float> onUpdate = null)
+    public void SetupState(State state, Action<bool> onEnter = null, Func<bool, UniTask> enterRoutine = null
+        , Action<bool> onExit = null, Func<bool, UniTask> exitRoutine = null, Action<bool, float> onUpdate = null)
     {
         // On Enter
         Action onEnterArg = () =>
@@ -74,7 +77,7 @@ public class Navigation : MonoBehaviour
         };
 
         // Enter Routine
-        Func<IEnumerator> enterRoutineArg = null;
+        Func<UniTask> enterRoutineArg = null;
         if (enterRoutine != null)
             enterRoutineArg = () => enterRoutine(_popped);
 
@@ -84,7 +87,7 @@ public class Navigation : MonoBehaviour
             onExitArg = () => onExit(_popped);
 
         // Exit Routine
-        Func<IEnumerator> exitRoutineArg = null;
+        Func<UniTask> exitRoutineArg = null;
         if (exitRoutine != null)
             exitRoutineArg = () => exitRoutine(_popped);
 
@@ -100,28 +103,29 @@ public class Navigation : MonoBehaviour
     /// トリガーを実行する
     /// 各Viewから呼ぶ（ボタンが押されたときなど）
     /// </summary>
-    public bool ExecuteTrigger(Trigger trigger)
+    public async UniTask<bool> ExecuteTrigger(Trigger trigger)
     {
         Debug.Log(trigger);
         if (trigger == Trigger.PageBack)
         {
             // 戻るトリガーだった場合は戻る処理をする
-            return Pop();
+            return await Pop();
         }
-        return _stateMachine.ExecuteTrigger(trigger);
+        return await _stateMachine.ExecuteTriggerAsync(trigger);
     }
 
     /// <summary>
     /// ページを戻る
     /// </summary>
-    private bool Pop()
+    private async UniTask<bool> Pop()
     {
-        if (_stateMachine.ExecuteTrigger(Trigger.PageBack) && _history.Count >= 1)
+        if (await _stateMachine.ExecuteTriggerAsync(Trigger.PageBack) && _history.Count >= 1)
         {
             // 戻ったフラグを立てておく
             _popped = true;
             return true;
         }
+        Debug.Log($"現在遷移中のため{Trigger.PageBack}は実行されません。");
         return false;
     }
 

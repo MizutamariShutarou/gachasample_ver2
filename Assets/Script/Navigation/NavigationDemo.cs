@@ -1,4 +1,7 @@
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 public class NavigationDemo : MonoBehaviour {
@@ -8,17 +11,18 @@ public class NavigationDemo : MonoBehaviour {
     
     private void Start()
     {
+        CancellationToken ct = this.GetCancellationTokenOnDestroy();
         // 初期化
         _navigation.Initialize();
 
         // 各状態毎のふるまいを定義
-        SetupState(Navigation.State.Home);
-        SetupState(Navigation.State.GachaTop);
-        SetupState(Navigation.State.GachaStaging);
-        SetupState(Navigation.State.GachaResult);
+        SetupState(Navigation.State.Home, ct);
+        SetupState(Navigation.State.GachaTop, ct);
+        SetupState(Navigation.State.GachaStaging, ct);
+        SetupState(Navigation.State.GachaResult, ct);
     }
 
-    private void SetupState(Navigation.State state)
+    private void SetupState(Navigation.State state, CancellationToken ct)
     {
         // 画面遷移時の処理
         // モデルであるNavigationから通知を受けて
@@ -27,35 +31,35 @@ public class NavigationDemo : MonoBehaviour {
         (
             state,
             popped => Debug.Log("OnEnter : " + state + (popped ? " (pop)" : "")),
-            popped => EnterRoutine(state, popped),
+            popped => EnterRoutine(state, popped, ct),
             popped => Debug.Log("OnExit : " + state + (popped ? " (pop)" : "")),
-            popped => ExitRoutine(state, popped)
+            popped => ExitRoutine(state, popped, ct)
         );
     }
-    
-    private IEnumerator EnterRoutine(Navigation.State state, bool popped)
+
+    protected async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log(state + " : ロード処理など" + (popped ? " (pop)" : ""));
-        yield return new WaitForSeconds(1.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
         Debug.Log(state + " : ページに入るアニメーションなど" + (popped ? " (pop)" : ""));
-        yield return new WaitForSeconds(1.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
     }
 
-    private IEnumerator ExitRoutine(Navigation.State state, bool popped)
+    protected async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
-        yield return new WaitForSeconds(1.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
     }
 
-    private void Update()
+    private async void Update()
     {
         // デバッグ用にトリガーを呼ぶ
         // 本来は各画面からNavigation.ExecuteTrigger()を直接呼ぶ
         if (Input.GetKeyDown(KeyCode.G))
-            _navigation.ExecuteTrigger(Navigation.Trigger.TapEnterGachaPage);
+            await _navigation.ExecuteTrigger(Navigation.Trigger.TapEnterGachaPage);
         if (Input.GetKeyDown(KeyCode.B))
-            _navigation.ExecuteTrigger(Navigation.Trigger.PageBack);
+            await _navigation.ExecuteTrigger(Navigation.Trigger.PageBack);
         if (Input.GetKeyDown(KeyCode.H))
-            _navigation.ExecuteTrigger(Navigation.Trigger.TapHomePage);
+            await _navigation.ExecuteTrigger(Navigation.Trigger.TapHomePage);
     }
 }
