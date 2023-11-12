@@ -125,7 +125,6 @@ public class Navigation : MonoBehaviour
             _popped = true;
             return true;
         }
-        Debug.Log($"現在遷移中のため{Trigger.PageBack}は実行されません。");
         return false;
     }
 
