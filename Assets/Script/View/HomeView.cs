@@ -2,15 +2,22 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Threading;
+using TMPro;
+using UnityEditor;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
 //日本語対応
-//TODO:Subscribe処理等をどこに持たせるか
-public class HomeView : ViewBase, ISubscribe
+public class HomeWindowView : ViewBase, ISubscribe
 {
-    [SerializeField]
-    Navigation.State _state;
+    WindowCollection _windowCollection;
+
+    [SerializeField, Header("State")]
+    private Navigation.State _state;
+
+    [SerializeField, Header("Window")]
+    private WindowCollection.Windows _window;
 
     [SerializeField]
     private Button _goGachaPageButton = default;
@@ -19,6 +26,7 @@ public class HomeView : ViewBase, ISubscribe
     {
         Initialize(_state);
         Subscribe();
+        _windowCollection = GetComponent<WindowCollection>();
     }
     public void Subscribe()
     {
@@ -34,11 +42,18 @@ public class HomeView : ViewBase, ISubscribe
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
         Debug.Log(state + " : ページに入るアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
+        OnActive(true);
     }
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
+        OnActive(false);
         Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
+    }
+
+    protected override void OnActive(bool flag)
+    {
+        _windowCollection.WindowList[_window].SetActive(flag);
     }
 }
