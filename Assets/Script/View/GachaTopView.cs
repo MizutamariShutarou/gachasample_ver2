@@ -1,55 +1,62 @@
 using Cysharp.Threading.Tasks;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GachaWindowView : ViewBase, ISubscribe
+public class GachaTopView : ViewBase, ISubscribe
 {
-    WindowCollection _windowCollection;
+    private ScreenCollection _screenCollection = default;
 
     [SerializeField, Header("State")]
-    private Navigation.State _state;
+    private Navigation.State _state = Navigation.State.GachaTop;
 
-    [SerializeField, Header("Window")]
-    private WindowCollection.Windows _window;
+    [SerializeField, Header("Screen")]
+    private ScreenCollection.Screens _screen = ScreenCollection.Screens.GachaTop;
 
     [SerializeField]
-    private Button _goHomePageButton;
+    private Canvas _confirmationPanel;
+
+    [SerializeField]
+    private Button _activeGachaConfirmationButton; 
+    
+    [SerializeField]
+    private Button _goGachaStagingButton;
+    private void Awake()
+    {
+        _screenCollection = GetComponent<ScreenCollection>();
+    }
     void Start()
     {
-        Initialize(Navigation.State.GachaTop);
+        Initialize(Navigation.State.GachaTop, _screenCollection.NavigationEntryPoint);
         Subscribe();
-        _windowCollection = GetComponent<WindowCollection>();
     }
     public void Subscribe()
     {
-        _goHomePageButton.onClick.AddListener(async () => await _navigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.TapHomePage));
+        _activeGachaConfirmationButton.onClick.AddListener(() => _confirmationPanel.gameObject.SetActive(true));
+        _goGachaStagingButton.onClick.AddListener(
+            async () => await _screenCollection.NavigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.TapGachaButton));
     }
     public void Release()
     {
-        _goHomePageButton.onClick.RemoveAllListeners();
+        _activeGachaConfirmationButton.onClick.RemoveAllListeners();
+        _goGachaStagingButton.onClick.RemoveAllListeners();
     }
     protected override async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log(state + " : ロード処理など" + (popped ? " (pop)" : ""));
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
-        Debug.Log(state + " : ページに入るアニメーションなど" + (popped ? " (pop)" : ""));
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
         OnActive(true);
+        await UniTask.CompletedTask;
     }
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
         OnActive(false);
+        await UniTask.CompletedTask;
     }
 
     protected override void OnActive(bool flag)
     {
-        _windowCollection.WindowList[WindowCollection.Windows.Gacha].gameObject.SetActive(flag);
+        _screenCollection.ScreenList[_screen].gameObject.SetActive(flag);
     }
 }

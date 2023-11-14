@@ -7,11 +7,10 @@ using UnityEngine;
 //日本語対応
 public abstract class ViewBase : MonoBehaviour
 {
-    [SerializeField]
-    protected NavigationEntryPoint _navigationEntryPoint;
-
-    protected void Initialize(Navigation.State state)
+    NavigationEntryPoint _navigationEntryPoint;
+    protected void Initialize(Navigation.State state, NavigationEntryPoint navigationEntryPoint)
     {
+        _navigationEntryPoint = navigationEntryPoint;
         SetupState(state, this.GetCancellationTokenOnDestroy());
     }
     private void SetupState(Navigation.State state, CancellationToken ct)

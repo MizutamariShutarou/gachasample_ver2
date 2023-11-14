@@ -602,6 +602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1910220765725202152}
+  - component: {fileID: 73892073}
   m_Layer: 0
   m_Name: ===HOMEWINDOW===
   m_TagString: Untagged
@@ -621,11 +622,26 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4509754623997833972}
   - {fileID: 1910220765876033451}
+  - {fileID: 4509754623997833972}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &73892073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910220765725202151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7adb09d20a02d7c4c9df670fa0d71242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firstActiveObjectList:
+  - {fileID: 1910220765876033450}
+  - {fileID: 3974144727917788207}
 --- !u!1 &1910220765770696575
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +756,7 @@ RectTransform:
   m_Children:
   - {fileID: 1910220764732554833}
   m_Father: {fileID: 1910220765725202152}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1147,7 +1163,7 @@ RectTransform:
   - {fileID: 1910220766029217232}
   - {fileID: 2323055908671678519}
   m_Father: {fileID: 1910220765725202152}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
