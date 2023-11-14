@@ -8,9 +8,23 @@ using UnityEngine.UI;
 
 public class GachaStagingView : ViewBase, ISubscribe
 {
+    private ScreenCollection _screenCollection;
+
+    [SerializeField, Header("State")]
+    private Navigation.State _state = Navigation.State.GachaStaging;
+
+    [SerializeField, Header("Screen")]
+    private ScreenCollection.Screens _screen = ScreenCollection.Screens.GachaStaging;
+
+    private void Awake()
+    {
+        _screenCollection = GetComponent<ScreenCollection>();
+    }
     private void Start()
     {
-        Initialize(Navigation.State.GachaStaging);
+        Initialize(_state, _screenCollection.NavigationEntryPoint);
+        Subscribe();
+        _screenCollection = GetComponent<ScreenCollection>();
     }
     public void Subscribe()
     {
@@ -36,6 +50,6 @@ public class GachaStagingView : ViewBase, ISubscribe
 
     protected override void OnActive(bool flag)
     {
-        throw new NotImplementedException();
+        _screenCollection.ScreenList[_screen].gameObject.SetActive(flag);
     }
 }
