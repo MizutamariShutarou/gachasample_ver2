@@ -6,10 +6,15 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GachaTopView : ViewBase, ISubscribe
+public class GachaWindowView : ViewBase, ISubscribe
 {
-    [SerializeField]
-    Navigation.State _state;
+    WindowCollection _windowCollection;
+
+    [SerializeField, Header("State")]
+    private Navigation.State _state;
+
+    [SerializeField, Header("Window")]
+    private WindowCollection.Windows _window;
 
     [SerializeField]
     private Button _goHomePageButton;
@@ -17,6 +22,7 @@ public class GachaTopView : ViewBase, ISubscribe
     {
         Initialize(Navigation.State.GachaTop);
         Subscribe();
+        _windowCollection = GetComponent<WindowCollection>();
     }
     public void Subscribe()
     {
@@ -32,11 +38,18 @@ public class GachaTopView : ViewBase, ISubscribe
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
         Debug.Log(state + " : ページに入るアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
+        OnActive(true);
     }
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
+        OnActive(false);
+    }
+
+    protected override void OnActive(bool flag)
+    {
+        _windowCollection.WindowList[WindowCollection.Windows.Gacha].gameObject.SetActive(flag);
     }
 }

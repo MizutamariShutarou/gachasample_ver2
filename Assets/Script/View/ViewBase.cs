@@ -32,4 +32,6 @@ public abstract class ViewBase : MonoBehaviour
     protected abstract UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct);
 
     protected abstract UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct);
+
+    protected abstract void OnActive(bool flag);
 }

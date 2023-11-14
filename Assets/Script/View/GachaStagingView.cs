@@ -33,4 +33,9 @@ public class GachaStagingView : ViewBase, ISubscribe
         Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
     }
+
+    protected override void OnActive(bool flag)
+    {
+        throw new NotImplementedException();
+    }
 }
