@@ -4,6 +4,8 @@ using UnityEngine;
 public abstract class WindowBase : MonoBehaviour
 {
     [SerializeField]
+    NavigationEntryPoint _navigationEntryPoint;
+    [SerializeField]
     protected List<GameObject> _firstActiveObjectList = default;
     protected virtual void ActiveFirstObject()
     {

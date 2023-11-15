@@ -27,12 +27,18 @@ public class WindowController : MonoBehaviour
     [SerializeField, Tooltip("GachaWindow")]
     private GameObject _gachaWindow = default;
 
+    [SerializeField]
+    private GameObject _loadingWindow = default;  
+
     private GameObject _nowWindow = default;
+
+    [SerializeField]
+    NavigationEntryPoint _navigationEntryPoint = default;
 
     private WindowCollection _windowCollection;
     private void Awake()
     {
-        _windowCollection = new WindowCollection(_homeWindow, _gachaWindow);
+        _windowCollection = new WindowCollection(_homeWindow, _gachaWindow, _loadingWindow);
     }
     void Start()
     {
@@ -86,21 +92,23 @@ public class WindowController : MonoBehaviour
         next.SetActive(true);
         _nowWindow = next;
     }
-    private void OnHomeButtonClicked(GameObject next)
+    private async void OnHomeButtonClicked(GameObject next)
     {
         if (_nowWindow == next)
         {
             return;
         }
+        await _navigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.TapHomePage);
         OnChangeWindow(_nowWindow, next);
     }
 
-    private void OnGachaButtonClicked(GameObject next)
+    private async void OnGachaButtonClicked(GameObject next)
     {
         if (_nowWindow == next)
         {
             return;
         }
+        await _navigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.TapEnterGachaPage);
         OnChangeWindow(_nowWindow, next);
     }
 }

@@ -10,15 +10,17 @@ public class WindowCollection
         None,
         Home,
         Gacha,
+        Loading,
     }
     private Dictionary<Windows, GameObject> _windowList = new Dictionary<Windows, GameObject>(); 
 
     public Dictionary<Windows, GameObject> WindowList => _windowList;
 
-    public WindowCollection(GameObject Home, GameObject Gacha)
+    public WindowCollection(GameObject Home, GameObject Gacha, GameObject Loading)
     {
         _windowList.Add(Windows.None, null);
         _windowList.Add(Windows.Home, Home);
         _windowList.Add(Windows.Gacha, Gacha);
+        _windowList.Add(Windows.Loading, Loading);
     }
 }

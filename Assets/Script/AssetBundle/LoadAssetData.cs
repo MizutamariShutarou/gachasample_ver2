@@ -32,14 +32,16 @@ public class LoadAssetData : MonoBehaviour
     public List<Sprite> SpritesList => _spritesList;
 
     public List<GameObject> GameObjectsList => _gameObjectsList;
-    
-    public async UniTask DataPreparation()
+
+    private void Awake()
     {
         _assetsBundles = new AsstsBundles();
-
-        _assetsBundles.LoadWeaponIcon().Forget();
+    }
+    public async UniTask DataPreparation()
+    {
+        await _assetsBundles.LoadWeaponIcon();
         Debug.Log("weaponIcon取得");
-        _assetsBundles.LoadWeaponObj().Forget();
+        await _assetsBundles.LoadWeaponObj();
         Debug.Log("weaponObj取得");
 
         if (_assetsBundles.WeaponIcon == null || _assetsBundles.WeaponObj == null)
