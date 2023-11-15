@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 303403468}
   - component: {fileID: 303403467}
   - component: {fileID: 303403466}
-  - component: {fileID: 303403465}
+  - component: {fileID: 303403469}
   m_Layer: 0
   m_Name: ScreenController
   m_TagString: Untagged
@@ -377,22 +377,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &303403465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303403464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c52736da11678244b95a700f3b2b154, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _navigationEntryPoint: {fileID: 1387537580}
-  _gachaTop: {fileID: 1509546437}
-  _gachaStaging: {fileID: 870758445}
-  _gachaResult: {fileID: 512042483}
 --- !u!114 &303403466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,6 +391,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _state: 3
   _screen: 2
+  _doGachaButton: {fileID: 407775580}
+  _gachaAnim: {fileID: 322105179}
+  _loadAssetData: {fileID: 148235397}
+  _loadingCanvas: {fileID: 2044818891}
 --- !u!114 &303403467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +412,8 @@ MonoBehaviour:
   _confirmationPanel: {fileID: 819197730}
   _activeGachaConfirmationButton: {fileID: 407775580}
   _goGachaStagingButton: {fileID: 275656843}
+  _loadAssetData: {fileID: 148235397}
+  _loadingCanvas: {fileID: 1895435066}
 --- !u!4 &303403468
 Transform:
   m_ObjectHideFlags: 0
@@ -439,6 +429,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &303403469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303403464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8e901421fb453f41ba55d9bb3d3f29c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _navigationEntryPoint: {fileID: 1387537580}
+  _gachaTop: {fileID: 1509546437}
+  _gachaStaging: {fileID: 870758445}
+  _gachaResult: {fileID: 512042483}
 --- !u!1 &310977583
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,6 +489,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &322105179 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 3358648551963895784, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
+  m_PrefabInstance: {fileID: 3815691053617972893}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &407775580 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3815691052627683290, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
@@ -951,6 +962,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1895435066 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5889587500061101994, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
+  m_PrefabInstance: {fileID: 5889587499192688156}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &2044818891 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 5889587498674704111, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
+  m_PrefabInstance: {fileID: 5889587499192688156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1910220765660681728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -958,13 +979,69 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 73892073, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: _navigationEntryPoint
+      value: 
+      objectReference: {fileID: 1387537580}
     - target: {fileID: 1265860521643204467, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1820379467}
+    - target: {fileID: 1910220764569105767, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764569105767, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764569105767, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764569105767, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764732980985, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764732980985, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764732980985, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220764732980985, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220765519144800, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220765519144800, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220765519144800, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220765519144800, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1910220765725202151, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
       propertyPath: m_Name
       value: ===HOMEWINDOW===
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220765725202151, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1910220765725202152, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
       propertyPath: m_RootOrder
@@ -1010,10 +1087,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1910220765876033454, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 1820379467}
+    - target: {fileID: 1910220766011077624, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220766011077624, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220766011077624, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1910220766011077624, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6d27a58a4aefbd4dbaa3deb75a4cdaf, type: 3}
 --- !u!1001 &3815691053617972893
@@ -1024,13 +1113,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 631591509, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 631591509, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
       propertyPath: _loadAssetData
       value: 
       objectReference: {fileID: 148235397}
-    - target: {fileID: 826492874, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
-      propertyPath: _loadAssetData
+    - target: {fileID: 1022634290, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
+      propertyPath: _navigationEntryPoint
       value: 
-      objectReference: {fileID: 148235397}
+      objectReference: {fileID: 1387537580}
+    - target: {fileID: 1588642957, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1588642957, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
       propertyPath: _loadAssetData
       value: 
@@ -1091,6 +1188,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ===GACHAWINDOW===
       objectReference: {fileID: 0}
+    - target: {fileID: 3815691052610564013, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3815691052680590375, guid: 2a34b2f40d940c147b48b0e9b900a0a6, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1125,13 +1226,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5889587498674704115, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889587499833139395, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5889587500061101994, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
       propertyPath: m_Name
       value: ===LoadWindow===
       objectReference: {fileID: 0}
     - target: {fileID: 5889587500061101994, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5889587500061101995, guid: c7d68d737f02f5a4fbac4c5044fc727a, type: 3}
       propertyPath: m_RootOrder
@@ -1259,6 +1368,14 @@ PrefabInstance:
       propertyPath: _gachaWindow
       value: 
       objectReference: {fileID: 1022634288}
+    - target: {fileID: 7659620510227573489, guid: 32217184d20996549912ba06dc271239, type: 3}
+      propertyPath: _loadingWindow
+      value: 
+      objectReference: {fileID: 1895435066}
+    - target: {fileID: 7659620510227573489, guid: 32217184d20996549912ba06dc271239, type: 3}
+      propertyPath: _navigationEntryPoint
+      value: 
+      objectReference: {fileID: 1387537580}
     - target: {fileID: 7659620510281803262, guid: 32217184d20996549912ba06dc271239, type: 3}
       propertyPath: m_Camera
       value: 

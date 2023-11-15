@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -21,16 +22,19 @@ public abstract class ViewBase : MonoBehaviour
         _navigationEntryPoint.Navigation.SetupState
         (
             state,
-            popped => Debug.Log("OnEnter : " + state + (popped ? " (pop)" : "")),
+            popped => OnEnter(state, popped, ct),
             popped => EnterRoutine(state, popped, ct),
-            popped => Debug.Log("OnExit : " + state + (popped ? " (pop)" : "")),
+            popped => OnExit(state, popped, ct),
             popped => ExitRoutine(state, popped, ct)
         );
     }
+    protected abstract UniTask OnEnter(Navigation.State state, bool popped, CancellationToken ct);
 
     protected abstract UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct);
 
     protected abstract UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct);
+
+    protected abstract UniTask OnExit(Navigation.State state, bool popped, CancellationToken ct);
 
     protected abstract void OnActive(bool flag);
 }
