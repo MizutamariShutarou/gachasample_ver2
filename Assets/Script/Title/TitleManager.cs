@@ -42,6 +42,7 @@ public class TitleManager : MonoBehaviour, ISubscribe
         async.allowSceneActivation = false;
 
         //AssetBundleよみこみ
+        //progressで進捗をとる
 
         await Load(async, this.GetCancellationTokenOnDestroy());
 
