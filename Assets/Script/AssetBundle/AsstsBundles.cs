@@ -30,10 +30,9 @@ public class AsstsBundles
     {
         var weaponIconAssetBundleRequest
             = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPON));
-
+        await weaponIconAssetBundleRequest;
         _weaponIcon = weaponIconAssetBundleRequest.assetBundle;
-
-        await UniTask.CompletedTask;
+        Debug.Log(weaponIconAssetBundleRequest.progress);
     }
 
     public async UniTask LoadWeaponObj()

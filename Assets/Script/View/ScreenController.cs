@@ -26,5 +26,8 @@ public class ScreenController : MonoBehaviour
     private void Awake()
     {
         _screenCollection = new ScreenCollection(_gachaTop, _gachaStaging, _gachaResult);
+        _screenCollection.ScreenList[ScreenCollection.Screens.GachaTop].SetActive(true);
+        _screenCollection.ScreenList[ScreenCollection.Screens.GachaStaging].SetActive(false);
+        _screenCollection.ScreenList[ScreenCollection.Screens.GachaResult].SetActive(false);
     }
 }

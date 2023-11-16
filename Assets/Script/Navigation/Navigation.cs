@@ -11,6 +11,7 @@ public class Navigation : MonoBehaviour
     public enum State
     {
         None,
+        Title, // タイトル
         Home, // ホームページ
         GachaTop, // ガチャトップページ
         GachaStaging, // ガチャ演出
@@ -22,6 +23,7 @@ public class Navigation : MonoBehaviour
     {
         None,
         PageBack, // 戻る
+        TapTitle, // タイトルボタンクリック
         TapHomePage, // ホームページ遷移ボタン
         TapEnterGachaPage, // ガチャページ遷移ボタン
         TapGachaButton, // 回すボタンタップ

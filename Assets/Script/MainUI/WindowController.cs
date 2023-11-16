@@ -27,9 +27,6 @@ public class WindowController : MonoBehaviour
     [SerializeField, Tooltip("GachaWindow")]
     private GameObject _gachaWindow = default;
 
-    [SerializeField]
-    private GameObject _loadingWindow = default;  
-
     private GameObject _nowWindow = default;
 
     [SerializeField]
@@ -38,7 +35,7 @@ public class WindowController : MonoBehaviour
     private WindowCollection _windowCollection;
     private void Awake()
     {
-        _windowCollection = new WindowCollection(_homeWindow, _gachaWindow, _loadingWindow);
+        _windowCollection = new WindowCollection(_homeWindow, _gachaWindow);
     }
     void Start()
     {
@@ -77,21 +74,15 @@ public class WindowController : MonoBehaviour
         _homeButton.onClick.RemoveAllListeners();
         _gachaButton.onClick.RemoveAllListeners();
     }
+
     private void OnChangeWindow(GameObject old, GameObject next)
     {
         old = _nowWindow;
         old.SetActive(false);
-        foreach(Transform obj in old.transform)
-        {
-            foreach(Transform child in obj)
-            {
-                child.gameObject.SetActive(false);
-            }    
-            obj.gameObject.SetActive(false);
-        }
         next.SetActive(true);
         _nowWindow = next;
     }
+
     private async void OnHomeButtonClicked(GameObject next)
     {
         if (_nowWindow == next)

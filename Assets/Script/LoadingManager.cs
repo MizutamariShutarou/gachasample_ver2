@@ -47,11 +47,17 @@ public class LoadingManager : MonoBehaviour
     public void ActiveLoadingWindow(bool flag)
     {
         _loadingGameObject.SetActive(flag);
+        ResetSliderValue();
     }
 
     public async UniTask ChangeSliderValue(float amount, CancellationToken ct)
     {
         _loadingImage.fillAmount = amount;
         await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken:ct);
+    }
+
+    private void ResetSliderValue()
+    {
+        _loadingImage.fillAmount = 0f;
     }
 }

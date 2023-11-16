@@ -24,12 +24,6 @@ public class GachaTopView : ViewBase, ISubscribe
     [SerializeField]
     private Button _goGachaStagingButton;
 
-    [SerializeField]
-    private LoadAssetData _loadAssetData = default;
-
-    [SerializeField]
-    private GameObject _loadingCanvas = default;
-
     private void Awake()
     {
         _screenController = GetComponent<ScreenController>();
@@ -37,7 +31,7 @@ public class GachaTopView : ViewBase, ISubscribe
     void Start()
     {
         Initialize(Navigation.State.GachaTop, _screenController.NavigationEntryPoint);
-        Subscribe();
+        _screenController = GetComponent<ScreenController>();
     }
     public void Subscribe()
     {
@@ -53,29 +47,29 @@ public class GachaTopView : ViewBase, ISubscribe
     protected override async UniTask OnEnter(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log("OnEnter : " + state + (popped ? " (pop)" : ""));
+        OnActive(true);
+        Subscribe();
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask OnExit(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log("OnExit : " + state + (popped ? " (pop)" : ""));
-        await _loadAssetData.DataPreparation();
-        await _loadAssetData.LoadAssets();
-        _loadingCanvas.SetActive(false);
+        Release();
         OnActive(false);
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        OnActive(true);
+        Debug.Log(state + " : ページをめくるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
-    { 
-        Debug.Log(state + "ExitRoutine");
-        _loadingCanvas.SetActive(true);
+    {
+        _confirmationPanel.gameObject.SetActive(false);
+        Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.CompletedTask;
     }
 

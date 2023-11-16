@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,27 +23,27 @@ public class TitleManager : MonoBehaviour, ISubscribe
     private void Start()
     {
         _titleCanvas.gameObject.SetActive(true);
+        //AssetBundleよみこみ
     }
     public void Subscribe()
     {
-        _titleButton.onClick.AddListener(() => TransitionHomeScene());
+        _titleButton.onClick.AddListener(async () => await TransitionHomeScene());
     }
     public void Release()
     {
         _titleButton.onClick.RemoveAllListeners();
     }
 
-    private async void TransitionHomeScene()
+    private async UniTask TransitionHomeScene()
     {
         _titleCanvas.gameObject.SetActive(false);
         LoadingManager.Instance.ActiveLoadingWindow(true);
 
+        await LoadAssetData.Instance.Load();
+
         var async = SceneChanger.Instance.ReturnAsyncOperation("DemoHomeScene");
 
         async.allowSceneActivation = false;
-
-        //AssetBundleよみこみ
-        //progressで進捗をとる
 
         await Load(async, this.GetCancellationTokenOnDestroy());
 
@@ -58,7 +59,7 @@ public class TitleManager : MonoBehaviour, ISubscribe
     {
         while (async.progress < 0.9f)
         {
-            await LoadingManager.Instance.ChangeSliderValue(async.progress, ct);
+            LoadingManager.Instance.ChangeSliderValue(async.progress, ct).Forget();
         }
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
         await LoadingManager.Instance.ChangeSliderValue(1f, ct);
