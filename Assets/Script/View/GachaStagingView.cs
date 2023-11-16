@@ -22,25 +22,22 @@ public class GachaStagingView : ViewBase, ISubscribe
     [SerializeField]
     private Animation _gachaAnim = default;
 
-    [SerializeField]
-    private LoadAssetData _loadAssetData = default;
-
-    [SerializeField]
-    private Canvas _loadingCanvas = default;
-
     private void Awake()
     {
         _screenController = GetComponent<ScreenController>();
+        _gachaAnim.gameObject.SetActive(false);
     }
     private void Start()
     {
         Initialize(_state, _screenController.NavigationEntryPoint);
-        Subscribe();
         _screenController = GetComponent<ScreenController>();
     }
     public void Subscribe()
     {
-
+        _doGachaButton.onClick.AddListener(async() =>
+        {
+            await StartGachaStaging();
+        });
     }
     public void Release()
     {
@@ -49,23 +46,37 @@ public class GachaStagingView : ViewBase, ISubscribe
     protected override async UniTask OnEnter(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log("OnEnter : " + state + (popped ? " (pop)" : ""));
+        OnActive(true);
+        Subscribe();
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask OnExit(Navigation.State state, bool popped, CancellationToken ct)
     {
         Debug.Log("OnExit : " + state + (popped ? " (pop)" : ""));
+        Release();
+        OnActive(false);
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        //Debug.Log("sta");
-        //_loadingCanvas.gameObject.SetActive(true);
-        //await _loadAssetData.DataPreparation();
-        //await _loadAssetData.LoadAssets();
-        //_loadingCanvas.gameObject.SetActive(false);
+        var amount = 0f;
+        Debug.Log(state + " : ページをめくるアニメーションなど" + (popped ? " (pop)" : ""));
         OnActive(true);
+        LoadingManager.Instance.ActiveLoadingWindow(true); 
+        _gachaAnim.gameObject.SetActive(false);
+        await LoadAssetData.Instance.DataPreparation();
+        await LoadAssetData.Instance.LoadAssets();
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
+        while(amount < 0.9f)
+        {
+            amount += 0.1f;
+            await LoadingManager.Instance.ChangeSliderValue(amount, ct);
+        }
+        await LoadingManager.Instance.ChangeSliderValue(1f, ct);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
+        LoadingManager.Instance.ActiveLoadingWindow(false);
         await UniTask.CompletedTask;
     }
 
@@ -73,11 +84,24 @@ public class GachaStagingView : ViewBase, ISubscribe
     {
         Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
-        OnActive(false);
+    }
+
+    private async UniTask StartGachaAnim()
+    {
+        _gachaAnim.gameObject.SetActive(true);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: this.GetCancellationTokenOnDestroy());
+    }
+
+    private async UniTask StartGachaStaging()
+    {
+        _doGachaButton.gameObject.SetActive(false);
+        await StartGachaAnim();
+        await _screenController.NavigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.FinishStaging);
     }
 
     protected override void OnActive(bool flag)
     {
         _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
+        _doGachaButton.gameObject.SetActive(flag);
     }
 }

@@ -36,7 +36,7 @@ public class GachaStagingScreen : MonoBehaviour, IScreenController
     public void Initialize()
     {
         _cts = new CancellationTokenSource();
-        _gachaAnim.gameObject.SetActive(false); 
+        _gachaAnim.gameObject.SetActive(false);
         _tapButton.gameObject.SetActive(true);
         Subscribe();
     }

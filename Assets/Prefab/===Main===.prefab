@@ -39,7 +39,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7659620510227573495}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63fa2f6ba4e8cc14292deb2d89252552, type: 3}
   m_Name: 
@@ -51,6 +51,7 @@ MonoBehaviour:
   _menuButton: {fileID: 7659620510875507635}
   _homeWindow: {fileID: 0}
   _gachaWindow: {fileID: 0}
+  _navigationEntryPoint: {fileID: 0}
 --- !u!1 &7659620510281803251
 GameObject:
   m_ObjectHideFlags: 0

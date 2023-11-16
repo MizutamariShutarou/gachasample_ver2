@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEditorInternal;
 
 //日本語対応
 public class LoadAssetData : MonoBehaviour
 {
+    private static LoadAssetData _instance = default;
+
+    public static LoadAssetData Instance => _instance;
+
     [SerializeField]
     private GameObject _alertpanel = default;
 
@@ -35,28 +40,36 @@ public class LoadAssetData : MonoBehaviour
 
     private void Awake()
     {
-        _assetsBundles = new AsstsBundles();
-    }
-    public async UniTask DataPreparation()
-    {
-        await _assetsBundles.LoadWeaponIcon();
-        Debug.Log("weaponIcon取得");
-        await _assetsBundles.LoadWeaponObj();
-        Debug.Log("weaponObj取得");
-
-        if (_assetsBundles.WeaponIcon == null || _assetsBundles.WeaponObj == null)
+        if (_instance)
         {
-            Debug.Log("Failed to load AssetBundle!");
-            _alertpanel.gameObject.SetActive(true);
-            return;
+            Destroy(this.gameObject);
         }
         else
         {
-            _spritesList = new List<Sprite>(_num);
-            _gameObjectsList = new List<GameObject>(_num);
+            _instance = this;
+            _assetsBundles = new AsstsBundles();
+            DontDestroyOnLoad(this.gameObject);
         }
+    }
 
-        await UniTask.CompletedTask;
+    private void Start()
+    {
+        _alertpanel.gameObject.SetActive(false);
+    }
+
+    public async UniTask Load()
+    {
+        await _assetsBundles.LoadWeaponIcon();
+    }
+    public async UniTask DataPreparation()
+    {
+        if (_assetsBundles.WeaponIcon == null)// || _assetsBundles.WeaponObj == null)
+        {
+            Debug.Log("データがないためダウンロードします");
+            await Load();
+            Debug.Log("ダウンロード完了");
+        }
+        _spritesList = new List<Sprite>(_num);
     }
 
     public async UniTask LoadAssets()
@@ -65,13 +78,17 @@ public class LoadAssetData : MonoBehaviour
         {
             var randomNom = Random.Range(0, _weaponDataList.Count);
 
+            if(_assetsBundles.WeaponIcon == null)
+            {
+                LoadingManager.Instance.ActiveLoadingWindow(false);
+                _alertpanel.gameObject.SetActive(true);
+            }
             var sprite = _assetsBundles.WeaponIcon.LoadAsset<Sprite>(_weaponDataList[randomNom]._iconName);
 
             _spritesList.Add(sprite);
 
-            GameObject gameObject = _assetsBundles.WeaponObj.LoadAsset<GameObject>(_weaponDataList[randomNom]._itemObjName);
-            Debug.Log(gameObject.name);
-            _gameObjectsList.Add(gameObject);
+            // GameObject gameObject = _assetsBundles.WeaponObj.LoadAsset<GameObject>(_weaponDataList[randomNom]._itemObjName);
+            // _gameObjectsList.Add(gameObject);
         }
         await UniTask.CompletedTask;
     }
@@ -79,7 +96,7 @@ public class LoadAssetData : MonoBehaviour
     public void UnLoadAsset()
     {
         _assetsBundles.WeaponIcon.Unload(true);
-        _assetsBundles.WeaponObj.Unload(true);
+        // _assetsBundles.WeaponObj.Unload(true);
     }
 }
 
