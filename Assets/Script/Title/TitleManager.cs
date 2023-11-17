@@ -1,9 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,7 +36,7 @@ public class TitleManager : MonoBehaviour, ISubscribe
         _titleCanvas.gameObject.SetActive(false);
         LoadingManager.Instance.ActiveLoadingWindow(true);
 
-        await LoadAssetData.Instance.Load();
+        await LoadAssetData.Instance.LoadAllAssetBundles();
 
         var async = SceneChanger.Instance.ReturnAsyncOperation("DemoHomeScene");
 
@@ -61,7 +58,7 @@ public class TitleManager : MonoBehaviour, ISubscribe
         {
             LoadingManager.Instance.ChangeSliderValue(async.progress, ct).Forget();
         }
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
         await LoadingManager.Instance.ChangeSliderValue(1f, ct);
     }
 }
