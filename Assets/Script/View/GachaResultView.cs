@@ -40,6 +40,8 @@ public class GachaResultView : ViewBase, ISubscribe
     [SerializeField]
     GameObject _firstWeaponObj = default;
 
+    private float _interval = 0f;
+
     private void Awake()
     {
         _screenController = GetComponent<ScreenController>();
@@ -49,13 +51,14 @@ public class GachaResultView : ViewBase, ISubscribe
     {
         Initialize(Navigation.State.GachaResult, _screenController.NavigationEntryPoint);
         _screenController = GetComponent<ScreenController>();
+        _interval = _firstAwaitTime;
     }
     public void Subscribe()
     {
         _goHome.onClick.AddListener(
             async () => await _screenController.NavigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.PageBack));
 
-        _skipButton.onClick.AddListener(() => Skip(_skipAwaitTime));
+        _skipButton.onClick.AddListener(Skip);
     }
 
     public void Release()
@@ -78,6 +81,7 @@ public class GachaResultView : ViewBase, ISubscribe
         {
             images[i].sprite = _defaultImage.sprite;
         }
+        _interval = _firstAwaitTime;
         await UniTask.CompletedTask;
     }
 
@@ -87,7 +91,7 @@ public class GachaResultView : ViewBase, ISubscribe
         OnActive(true);
         Subscribe();
         _goHome.gameObject.SetActive(false);
-        await ShowResult(_firstAwaitTime);
+        await ShowResult();
         _goHome.gameObject.SetActive(true);
     }
 
@@ -103,20 +107,19 @@ public class GachaResultView : ViewBase, ISubscribe
         _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
 
     }
-    private async UniTask ShowResult(float intervalTime)
+    private async UniTask ShowResult()
     {
         var imageAlly = _gachaIconBG.GetComponentsInChildren<Image>();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         for (int i = 0; i < LoadAssetData.Instance.Num; i++)
         {
             imageAlly[i].sprite = LoadAssetData.Instance.SpritesList[i];
-            await UniTask.Delay(TimeSpan.FromSeconds(intervalTime));
+            await UniTask.Delay(TimeSpan.FromSeconds(_interval));
         }
-        _skipButton.gameObject.SetActive(false);
     }
-    public void Skip(float skipTime)
+    public void Skip()
     {
-        if (_firstAwaitTime == skipTime) return;
-        _firstAwaitTime = skipTime;
+        if (_interval == _skipAwaitTime) return;
+        _interval = _skipAwaitTime;
     }
 }
