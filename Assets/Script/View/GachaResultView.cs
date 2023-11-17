@@ -32,7 +32,7 @@ public class GachaResultView : ViewBase, ISubscribe
     private float _firstAwaitTime = 0.5f;
 
     [SerializeField]
-    private float _awaitTime = default;
+    private float _skipAwaitTime = default;
 
     [SerializeField]
     private Canvas _firstCanvas = default;
@@ -55,7 +55,7 @@ public class GachaResultView : ViewBase, ISubscribe
         _goHome.onClick.AddListener(
             async () => await _screenController.NavigationEntryPoint.Navigation.ExecuteTrigger(Navigation.Trigger.PageBack));
 
-        _skipButton.onClick.AddListener(Skip);
+        _skipButton.onClick.AddListener(() => Skip(_skipAwaitTime));
     }
 
     public void Release()
@@ -87,7 +87,7 @@ public class GachaResultView : ViewBase, ISubscribe
         OnActive(true);
         Subscribe();
         _goHome.gameObject.SetActive(false);
-        await ShowResult();
+        await ShowResult(_firstAwaitTime);
         _goHome.gameObject.SetActive(true);
     }
 
@@ -103,20 +103,20 @@ public class GachaResultView : ViewBase, ISubscribe
         _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
 
     }
-    private async UniTask ShowResult()
+    private async UniTask ShowResult(float intervalTime)
     {
         var imageAlly = _gachaIconBG.GetComponentsInChildren<Image>();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         for (int i = 0; i < LoadAssetData.Instance.Num; i++)
         {
             imageAlly[i].sprite = LoadAssetData.Instance.SpritesList[i];
-            await UniTask.Delay(TimeSpan.FromSeconds(_firstAwaitTime));
+            await UniTask.Delay(TimeSpan.FromSeconds(intervalTime));
         }
         _skipButton.gameObject.SetActive(false);
     }
-    public void Skip()
+    public void Skip(float skipTime)
     {
-        if (_firstAwaitTime == _awaitTime) return;
-        _firstAwaitTime = _awaitTime;
+        if (_firstAwaitTime == skipTime) return;
+        _firstAwaitTime = skipTime;
     }
 }

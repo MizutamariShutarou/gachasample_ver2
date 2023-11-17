@@ -66,8 +66,8 @@ public class GachaStagingView : ViewBase, ISubscribe
         OnActive(true);
         LoadingManager.Instance.ActiveLoadingWindow(true); 
         _gachaAnim.gameObject.SetActive(false);
-        await LoadAssetData.Instance.DataPreparation();
-        await LoadAssetData.Instance.LoadAssets();
+        await LoadAssetData.Instance.DataPreparation(AssetBundleName.AssetName.Weapon);
+        await LoadAssetData.Instance.LoadAssets(AssetBundleName.AssetName.Weapon);
         await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
         while(amount < 0.9f)
         {
