@@ -8,13 +8,13 @@ using UnityEngine.UI;
 
 public class GachaStagingView : ViewBase, ISubscribe
 {
-    private ScreenController _screenController = default;
+    private GachaScreenController _screenController = default;
 
     [SerializeField, Header("State")]
     private Navigation.State _state = Navigation.State.GachaStaging;
 
     [SerializeField, Header("Screen")]
-    private ScreenCollection.Screens _screen = ScreenCollection.Screens.GachaStaging;
+    private GachaScreenCollection.Screens _screen = GachaScreenCollection.Screens.GachaStaging;
 
     [SerializeField]
     private Button _doGachaButton = default;
@@ -24,13 +24,13 @@ public class GachaStagingView : ViewBase, ISubscribe
 
     private void Awake()
     {
-        _screenController = GetComponent<ScreenController>();
+        _screenController = GetComponent<GachaScreenController>();
         _gachaAnim.gameObject.SetActive(false);
     }
     private void Start()
     {
         Initialize(_state, _screenController.NavigationEntryPoint);
-        _screenController = GetComponent<ScreenController>();
+        _screenController = GetComponent<GachaScreenController>();
     }
     public void Subscribe()
     {
@@ -62,21 +62,27 @@ public class GachaStagingView : ViewBase, ISubscribe
     protected override async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
         var amount = 0f;
-        Debug.Log(state + " : ページをめくるアニメーションなど" + (popped ? " (pop)" : ""));
+
         OnActive(true);
         LoadingManager.Instance.ActiveLoadingWindow(true); 
         _gachaAnim.gameObject.SetActive(false);
-        await LoadAssetData.Instance.DataPreparation(AssetBundleName.AssetName.Weapon);
-        await LoadAssetData.Instance.LoadAssets(AssetBundleName.AssetName.Weapon);
+
+        await _screenController.GachaController.DataPreparation(AssetBundleStore.AssetName.Weapon);
+        await _screenController.GachaController.LoadGachaData(AssetBundleStore.AssetName.Weapon);
+
         await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
+
         while(amount < 0.9f)
         {
             amount += 0.1f;
             await LoadingManager.Instance.ChangeSliderValue(amount, ct);
         }
         await LoadingManager.Instance.ChangeSliderValue(1f, ct);
+
         await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
+
         LoadingManager.Instance.ActiveLoadingWindow(false);
+
         await UniTask.CompletedTask;
     }
 

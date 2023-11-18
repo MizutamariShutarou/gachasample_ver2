@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class GachaTopView : ViewBase, ISubscribe
 {
-    private ScreenController _screenController = default;
+    private GachaScreenController _screenController = default;
 
     [SerializeField, Header("State")]
     private Navigation.State _state = Navigation.State.GachaTop;
 
     [SerializeField, Header("Screen")]
-    private ScreenCollection.Screens _screen = ScreenCollection.Screens.GachaTop;
+    private GachaScreenCollection.Screens _screen = GachaScreenCollection.Screens.GachaTop;
 
     [SerializeField]
     private Canvas _confirmationPanel;
@@ -26,12 +26,12 @@ public class GachaTopView : ViewBase, ISubscribe
 
     private void Awake()
     {
-        _screenController = GetComponent<ScreenController>();
+        _screenController = GetComponent<GachaScreenController>();
     }
     void Start()
     {
         Initialize(Navigation.State.GachaTop, _screenController.NavigationEntryPoint);
-        _screenController = GetComponent<ScreenController>();
+        _screenController = GetComponent<GachaScreenController>();
     }
     public void Subscribe()
     {

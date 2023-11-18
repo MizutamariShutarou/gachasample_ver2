@@ -3,7 +3,7 @@ using UnityEngine;
 
 //日本語対応
 
-public class ScreenCollection
+public class GachaScreenCollection
 {
     public enum Screens
     {
@@ -17,7 +17,7 @@ public class ScreenCollection
 
     public Dictionary<Screens, GameObject> ScreenList => _screenList;
 
-    public ScreenCollection(GameObject top, GameObject staging, GameObject result)
+    public GachaScreenCollection(GameObject top, GameObject staging, GameObject result)
     {
         _screenList.Add(Screens.None, null);
         _screenList.Add(Screens.GachaTop, top);

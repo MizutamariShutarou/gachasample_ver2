@@ -8,13 +8,13 @@ using UnityEngine.UI;
 
 public class GachaResultView : ViewBase, ISubscribe
 {
-    private ScreenController _screenController = default;
+    private GachaScreenController _screenController = default;
 
     [SerializeField, Header("State")]
     private Navigation.State _state = Navigation.State.GachaTop;
 
     [SerializeField, Header("Screen")]
-    private ScreenCollection.Screens _screen = ScreenCollection.Screens.GachaTop;
+    private GachaScreenCollection.Screens _screen = GachaScreenCollection.Screens.GachaTop;
 
     [SerializeField]
     private GameObject _gachaIconBG = default;
@@ -44,13 +44,13 @@ public class GachaResultView : ViewBase, ISubscribe
 
     private void Awake()
     {
-        _screenController = GetComponent<ScreenController>();
+        _screenController = GetComponent<GachaScreenController>();
     }
 
     private void Start()
     {
-        Initialize(Navigation.State.GachaResult, _screenController.NavigationEntryPoint);
-        _screenController = GetComponent<ScreenController>();
+        Initialize(_state, _screenController.NavigationEntryPoint);
+        _screenController = GetComponent<GachaScreenController>();
         _interval = _firstAwaitTime;
     }
     public void Subscribe()
@@ -111,9 +111,9 @@ public class GachaResultView : ViewBase, ISubscribe
     {
         var imageAlly = _gachaIconBG.GetComponentsInChildren<Image>();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
-        for (int i = 0; i < LoadAssetData.Instance.Num; i++)
+        for (int i = 0; i < _screenController.GachaController.MaxEmissionNum; i++)
         {
-            imageAlly[i].sprite = LoadAssetData.Instance.SpritesList[i];
+            imageAlly[i].sprite = _screenController.GachaController.SpritesList[i];
             await UniTask.Delay(TimeSpan.FromSeconds(_interval));
         }
     }
