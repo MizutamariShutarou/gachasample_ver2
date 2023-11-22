@@ -1,7 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +32,7 @@ public class GachaStagingView : ViewBase, ISubscribe
     }
     public void Subscribe()
     {
-        _doGachaButton.onClick.AddListener(async() =>
+        _doGachaButton.onClick.AddListener(async () =>
         {
             await StartGachaStaging();
         });
@@ -64,22 +62,22 @@ public class GachaStagingView : ViewBase, ISubscribe
         var amount = 0f;
 
         OnActive(true);
-        LoadingManager.Instance.ActiveLoadingWindow(true); 
+        LoadingManager.Instance.ActiveLoadingWindow(true);
         _gachaAnim.gameObject.SetActive(false);
 
         await _screenController.GachaController.DataPreparation(AssetBundleStore.AssetName.Weapon);
         await _screenController.GachaController.LoadGachaData(AssetBundleStore.AssetName.Weapon);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: ct);
 
-        while(amount < 0.9f)
+        while (amount < 0.9f)
         {
             amount += 0.1f;
             await LoadingManager.Instance.ChangeSliderValue(amount, ct);
         }
         await LoadingManager.Instance.ChangeSliderValue(1f, ct);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:ct);
+        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: ct);
 
         LoadingManager.Instance.ActiveLoadingWindow(false);
 

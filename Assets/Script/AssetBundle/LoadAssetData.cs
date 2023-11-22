@@ -14,7 +14,7 @@ public class LoadAssetData : MonoBehaviour
     [SerializeField]
     private GameObject _alertpanel = default;
 
-    private AssetBundleStore _store = AssetBundleStore.Instance;
+    private AssetBundleStore _store = new AssetBundleStore();
 
     public AssetBundleStore Store => _store;
 
