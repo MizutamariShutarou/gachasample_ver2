@@ -34,12 +34,6 @@ public class GachaResultView : ViewBase, ISubscribe
     [SerializeField]
     private float _skipAwaitTime = default;
 
-    [SerializeField]
-    private Canvas _firstCanvas = default;
-
-    [SerializeField]
-    GameObject _firstWeaponObj = default;
-
     private float _interval = 0f;
 
     private void Awake()
