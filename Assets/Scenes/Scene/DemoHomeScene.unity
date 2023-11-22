@@ -428,8 +428,6 @@ MonoBehaviour:
   _goHome: {fileID: 463193703}
   _firstAwaitTime: 0.5
   _skipAwaitTime: 0.2
-  _firstCanvas: {fileID: 0}
-  _firstWeaponObj: {fileID: 0}
 --- !u!1 &310977583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,18 +1520,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7659620510227573489, guid: 32217184d20996549912ba06dc271239, type: 3}
-      propertyPath: _homeWindow
-      value: 
-      objectReference: {fileID: 73892071}
-    - target: {fileID: 7659620510227573489, guid: 32217184d20996549912ba06dc271239, type: 3}
-      propertyPath: _gachaWindow
-      value: 
-      objectReference: {fileID: 1022634288}
-    - target: {fileID: 7659620510227573489, guid: 32217184d20996549912ba06dc271239, type: 3}
-      propertyPath: _navigationEntryPoint
-      value: 
-      objectReference: {fileID: 1387537580}
     - target: {fileID: 7659620510281803262, guid: 32217184d20996549912ba06dc271239, type: 3}
       propertyPath: m_Camera
       value: 
