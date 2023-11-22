@@ -33,28 +33,11 @@ public class GachaController : MonoBehaviour
     }
     public async UniTask DataPreparation(AssetBundleStore.AssetName assetName)
     {
-        //TODO:AssetBundleが読み込まれていなかったらロ見込む処理を書きたい
-        if (LoadAssetData.Instance.Store[assetName] == null)// || _assetsBundles.WeaponObj == null)
+        if (LoadAssetData.Instance.Store[assetName] == null)
         {
             Debug.Log("データがないためダウンロードします");
             await LoadAssetData.Instance.LoadNotLoadedData(assetName);
             Debug.Log("ダウンロード完了");
         }
-        //try
-        //{
-        //    if (LoadAssetData.Instance.Store[assetName] == null)// || _assetsBundles.WeaponObj == null)
-        //    {
-        //        Debug.Log("データがないためダウンロードします");
-        //        await LoadAssetData.Instance.LoadNotLoadedData(assetName);
-        //        Debug.Log("ダウンロード完了");
-        //    }
-        //}
-
-        //catch (KeyNotFoundException)
-        //{
-        //    Debug.Log("データがないためダウンロードします");
-        //    await LoadAssetData.Instance.LoadNotLoadedData(assetName);
-        //    Debug.Log("ダウンロード完了");
-        //}
     }
 }

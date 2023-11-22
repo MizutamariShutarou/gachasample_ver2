@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7659620510227573488}
-  - component: {fileID: 7659620510227573489}
   m_Layer: 0
   m_Name: MainUIController
   m_TagString: Untagged
@@ -32,26 +31,6 @@ Transform:
   m_Father: {fileID: 7659620511157999190}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7659620510227573489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7659620510227573495}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63fa2f6ba4e8cc14292deb2d89252552, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _homeButton: {fileID: 7659620511626108937}
-  _questButton: {fileID: 7659620511229677541}
-  _boxButton: {fileID: 7659620511317037243}
-  _gachaButton: {fileID: 7659620511818850244}
-  _menuButton: {fileID: 7659620510875507635}
-  _homeWindow: {fileID: 0}
-  _gachaWindow: {fileID: 0}
-  _navigationEntryPoint: {fileID: 0}
 --- !u!1 &7659620510281803251
 GameObject:
   m_ObjectHideFlags: 0
