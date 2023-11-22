@@ -9,19 +9,6 @@ using System;
 //日本語対応
 public class AssetBundleStore
 {
-    private static AssetBundleStore _instance = default;
-    public static AssetBundleStore Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new AssetBundleStore();
-            }
-            return _instance;
-        }
-    }
-
     private const string ARMOR = "gacha/armor";
     private const string ARROW = "gacha/arrow";
     private const string BOOTS = "gacha/boots";
@@ -30,6 +17,7 @@ public class AssetBundleStore
     private const string HELMET = "gacha/helmet";
     private const string WEAPON = "gacha/weapon";
     private const string WEAPONOBJ = "gacha/weaponobj";
+
     public enum AssetName
     {
         Armor,
@@ -44,7 +32,7 @@ public class AssetBundleStore
 
     private Dictionary<AssetName, string> _assetBundlesDic = new Dictionary<AssetName, string>();
 
-    private AssetBundleStore()
+    public AssetBundleStore()
     {
         if (_assetBundlesDic.Count >= Enum.GetNames(typeof(AssetName)).Length) return;
         _assetBundlesDic.Add(AssetName.Armor, ARMOR);
@@ -73,23 +61,4 @@ public class AssetBundleStore
         await UniTask.WaitUntil(() => assetBundleRequest.isDone);
         _bundleStore[key] = assetBundleRequest.assetBundle;
     }
-
-    //public async UniTask LoadWeaponIcon()
-    //{
-    //    var weaponIconAssetBundleRequest
-    //        = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.AssetBundlesDic[AssetBundleName.AssetName.Weapon]));
-    //    await weaponIconAssetBundleRequest;
-    //    _weaponIcon = weaponIconAssetBundleRequest.assetBundle;
-    //    Debug.Log(weaponIconAssetBundleRequest.progress);
-    //}
-
-    //public async UniTask LoadWeaponObj()
-    //{
-    //    var weaponObjAssetBundleRequest
-    //       = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, AssetBundleName.WEAPONOBJ));
-
-    //    _weaponObj = weaponObjAssetBundleRequest.assetBundle;
-
-    //    await UniTask.CompletedTask;
-    //}
 }
