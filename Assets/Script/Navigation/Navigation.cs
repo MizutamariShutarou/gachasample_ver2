@@ -45,7 +45,7 @@ public class Navigation : MonoBehaviour
         if (_isInitialized) return;
 
         // StateMachineを生成
-        _stateMachine = new StateMachine<State, Trigger>(this, State.Home);
+        _stateMachine = new StateMachine<State, Trigger>(State.Home);
 
         // 遷移情報を登録
         _stateMachine.AddTransition(State.Home, State.GachaTop, Trigger.TapEnterGachaPage);
