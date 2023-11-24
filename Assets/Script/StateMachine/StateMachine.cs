@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using System.Threading.Tasks;
 using System.Threading;
 
-// 各State毎のdelagateを登録しておくクラス
+// 各State毎のdelegateを登録しておくクラス
 public class StateMapping
 {
     public Action onEnter = default;
@@ -28,7 +28,6 @@ public class StateMachine<TState, TTrigger>
     where TState : struct, IConvertible, IComparable
     where TTrigger : struct, IConvertible, IComparable
 {
-    private MonoBehaviour _monoBehaviour = default;
     private TState _stateType = default;
     private StateMapping _stateMapping = default;
 
@@ -50,10 +49,8 @@ public class StateMachine<TState, TTrigger>
     private Dictionary<object, StateMapping> _stateMappings = new Dictionary<object, StateMapping>();
     private Dictionary<TState, List<Transition<TState, TTrigger>>> _transitionLists = new Dictionary<TState, List<Transition<TState, TTrigger>>>();
 
-    public StateMachine(MonoBehaviour monoBehaviour, TState initialState)
+    public StateMachine(TState initialState)
     {
-        _monoBehaviour = monoBehaviour;
-
         // StateからStateMappingを作成
         var enumValues = Enum.GetValues(typeof(TState));
         for (int i = 0; i < enumValues.Length; i++)
