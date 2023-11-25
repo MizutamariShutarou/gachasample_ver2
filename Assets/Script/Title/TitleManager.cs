@@ -20,7 +20,6 @@ public class TitleManager : MonoBehaviour, ISubscribe
     private void Start()
     {
         _titleCanvas.gameObject.SetActive(true);
-        //AssetBundleよみこみ
     }
     public void Subscribe()
     {

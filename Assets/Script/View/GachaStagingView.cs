@@ -18,7 +18,7 @@ public class GachaStagingView : ViewBase, ISubscribe
     private Button _doGachaButton = default;
 
     [SerializeField]
-    private Animation _gachaAnim = default;
+    private Animator _gachaAnim = default;
 
     private void Awake()
     {
@@ -65,8 +65,8 @@ public class GachaStagingView : ViewBase, ISubscribe
         LoadingManager.Instance.ActiveLoadingWindow(true);
         _gachaAnim.gameObject.SetActive(false);
 
-        await _screenController.GachaController.DataPreparation(AssetBundleStore.AssetName.Weapon);
-        await _screenController.GachaController.LoadGachaData(AssetBundleStore.AssetName.Weapon);
+        await _screenController.GachaController.DataPreparation(AssetsName.weapon);
+        await _screenController.GachaController.LoadGachaData(AssetsName.weapon);
 
         await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: ct);
 
@@ -93,7 +93,7 @@ public class GachaStagingView : ViewBase, ISubscribe
     private async UniTask StartGachaAnim()
     {
         _gachaAnim.gameObject.SetActive(true);
-        await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: this.GetCancellationTokenOnDestroy());
+        await UniTask.WaitUntil(() => _gachaAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
     }
 
     private async UniTask StartGachaStaging()

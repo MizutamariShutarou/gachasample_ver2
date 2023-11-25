@@ -4,6 +4,21 @@ using System.IO;
 
 public class CreateAssetBundles
 {
+    private const string CODE = @"
+
+public enum AssetsName
+{
+    armor,
+    arrow,
+    boots,
+    bow,
+    glove,
+    helmet,
+    weapon,
+    weaponObj,
+}
+";
+
     [MenuItem("Assets/Build AssetBundles")]
     static void BuildAllAssetBundles()
     {
@@ -15,6 +30,12 @@ public class CreateAssetBundles
         BuildPipeline.BuildAssetBundles(assetBundleDirectory,
                                         BuildAssetBundleOptions.None,
                                         BuildTarget.StandaloneWindows);
+
+        var enumPath = "Assets/Script/AssetBundle/AssetsName.cs";
+
+        File.WriteAllText(enumPath, CODE);
+
+        AssetDatabase.Refresh();
     }
 
 }
