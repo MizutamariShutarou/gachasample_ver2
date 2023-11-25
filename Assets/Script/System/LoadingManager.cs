@@ -18,8 +18,6 @@ public class LoadingManager : MonoBehaviour
 
     public Image LoadingImage => _loadingImage;
 
-    private CancellationTokenSource _cts;
-
     private void Awake()
     {
         if (_instance)

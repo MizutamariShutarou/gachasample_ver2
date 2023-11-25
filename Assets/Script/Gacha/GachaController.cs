@@ -19,7 +19,7 @@ public class GachaController : MonoBehaviour
 
     public List<Sprite> SpritesList => _spritesList;
 
-    public async UniTask LoadGachaData(AssetBundleStore.AssetName assetName)
+    public async UniTask LoadGachaData(AssetsName assetName)
     {
         for (int i = 0; i < _maxEmissionNum; i++)
         {
@@ -31,7 +31,7 @@ public class GachaController : MonoBehaviour
         }
         await UniTask.CompletedTask;
     }
-    public async UniTask DataPreparation(AssetBundleStore.AssetName assetName)
+    public async UniTask DataPreparation(AssetsName assetName)
     {
         if (LoadAssetData.Instance.Store[assetName] == null)
         {

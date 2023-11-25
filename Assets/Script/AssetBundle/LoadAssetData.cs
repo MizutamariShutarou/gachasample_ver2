@@ -5,53 +5,36 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //日本語対応
-public class LoadAssetData : MonoBehaviour
+public class LoadAssetData
 {
     private static LoadAssetData _instance = default;
 
-    public static LoadAssetData Instance => _instance;
-
-    [SerializeField]
-    private GameObject _alertpanel = default;
-
+    public static LoadAssetData Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new LoadAssetData();
+            }
+            return _instance;
+        }
+    }
     private AssetBundleStore _store = new AssetBundleStore();
 
     public AssetBundleStore Store => _store;
 
-    private void Awake()
-    {
-        if (_instance)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-    }
-
-    private void Start()
-    {
-        _alertpanel.gameObject.SetActive(false);
-    }
-
     public async UniTask LoadAllAssetBundles()
     {
-        foreach (AssetBundleStore.AssetName assetName in Enum.GetValues(typeof(AssetBundleStore.AssetName)))
-        {
-            await _store.LoadAssetBundle(assetName);
-            Debug.Log(assetName);
-        }
-        Debug.Log("すべて読み込みました");
+        await _store.LoadAssetBundle(AssetsName.weapon);
     }
 
-    public async UniTask LoadNotLoadedData(AssetBundleStore.AssetName assetName)
+    public async UniTask LoadNotLoadedData(AssetsName assetName)
     {
         await _store.LoadAssetBundle(assetName);
     }
 
-    public void UnLoadAsset(AssetBundleStore.AssetName assetName)
+    public void UnLoadAsset(AssetsName assetName)
     {
         _store[assetName].Unload(true);
     }
