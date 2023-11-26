@@ -1,12 +1,8 @@
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System;
-using UnityEngine;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
-using System.Threading.Tasks;
-using System.Threading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 // 各State毎のdelegateを登録しておくクラス
 public class StateMapping
@@ -35,7 +31,7 @@ public class StateMachine<TState, TTrigger>
     /// 遷移中である場合の遷移先
     /// </summary>
     private TState? _destinationState = default;
-    
+
     /// <summary>
     /// Exit遷移中か
     /// </summary>
@@ -44,7 +40,7 @@ public class StateMachine<TState, TTrigger>
     /// <summary>
     /// Enter遷移中か
     /// </summary>
-    private bool _inEnterTransition = default;    
+    private bool _inEnterTransition = default;
 
     private Dictionary<object, StateMapping> _stateMappings = new Dictionary<object, StateMapping>();
     private Dictionary<TState, List<Transition<TState, TTrigger>>> _transitionLists = new Dictionary<TState, List<Transition<TState, TTrigger>>>();
@@ -94,7 +90,7 @@ public class StateMachine<TState, TTrigger>
         if (transition == null)
         {
             // 新規登録
-            transitions.Add(new Transition<TState, TTrigger> { To = to, Trigger = trigger});
+            transitions.Add(new Transition<TState, TTrigger> { To = to, Trigger = trigger });
 
             if (otherTrigger == null) return;
             transitions.Add(new Transition<TState, TTrigger> { To = to, Trigger = (TTrigger)otherTrigger });

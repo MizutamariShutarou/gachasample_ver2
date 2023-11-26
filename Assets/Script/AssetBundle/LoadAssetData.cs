@@ -1,8 +1,5 @@
 using Cysharp.Threading.Tasks;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 //日本語対応
 public class LoadAssetData
@@ -34,9 +31,10 @@ public class LoadAssetData
         await _store.LoadAssetBundle(assetName);
     }
 
-    public void UnLoadAsset(AssetsName assetName)
+    public void UnLoadAsset(AssetsName assetName, bool flag)
     {
-        _store[assetName].Unload(true);
+        _store[assetName].Unload(flag);
+        Debug.Log($"{assetName}をUnLoadしました");
     }
 }
 
