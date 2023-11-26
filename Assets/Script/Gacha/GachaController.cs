@@ -1,6 +1,4 @@
 using Cysharp.Threading.Tasks;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +21,7 @@ public class GachaController : MonoBehaviour
     {
         for (int i = 0; i < _maxEmissionNum; i++)
         {
-            var randomNom = UnityEngine.Random.Range(0, _weaponDataList.Count);
+            var randomNom = Random.Range(0, _weaponDataList.Count);
 
             var sprite = LoadAssetData.Instance.Store[assetName].LoadAsset<Sprite>(_weaponDataList[randomNom]._iconName);
 
@@ -39,5 +37,10 @@ public class GachaController : MonoBehaviour
             await LoadAssetData.Instance.LoadNotLoadedData(assetName);
             Debug.Log("ダウンロード完了");
         }
+    }
+    
+    public void ClearList()
+    {
+        _spritesList.Clear();
     }
 }

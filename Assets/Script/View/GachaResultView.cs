@@ -1,7 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,15 +61,13 @@ public class GachaResultView : ViewBase, ISubscribe
 
     protected override async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log(state + " : ページをめくるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         var images = _gachaIconBG.GetComponentsInChildren<Image>();
-        for(int i = 0; i < images.Length; i++)
+        for (int i = 0; i < images.Length; i++)
         {
             images[i].sprite = _defaultImage.sprite;
         }
@@ -81,7 +77,6 @@ public class GachaResultView : ViewBase, ISubscribe
 
     protected override async UniTask OnEnter(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log("OnEnter : " + state + (popped ? " (pop)" : ""));
         OnActive(true);
         Subscribe();
         _goHome.gameObject.SetActive(false);
@@ -91,9 +86,10 @@ public class GachaResultView : ViewBase, ISubscribe
 
     protected override async UniTask OnExit(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log("OnExit : " + state + (popped ? " (pop)" : ""));
         Release();
         OnActive(false);
+        LoadAssetData.Instance.UnLoadAsset(AssetsName.weapon, true);
+        _screenController.GachaController.ClearList();
         await UniTask.CompletedTask;
     }
     protected override void OnActive(bool flag)
