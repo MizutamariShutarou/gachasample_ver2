@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,11 +45,11 @@ public class WindowController : MonoBehaviour
     {
         foreach (GameObject window in _windowCollection.WindowList.Values)
         {
-            if(window == null)
+            if (window == null)
             {
                 continue;
             }
-            else if(window == _windowCollection.WindowList[WindowCollection.Windows.Home])
+            else if (window == _windowCollection.WindowList[WindowCollection.Windows.Home])
             {
                 _nowWindow = window;
             }

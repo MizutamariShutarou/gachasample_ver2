@@ -43,7 +43,6 @@ public class GachaStagingView : ViewBase, ISubscribe
     }
     protected override async UniTask OnEnter(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log("OnEnter : " + state + (popped ? " (pop)" : ""));
         OnActive(true);
         Subscribe();
         await UniTask.CompletedTask;
@@ -51,7 +50,6 @@ public class GachaStagingView : ViewBase, ISubscribe
 
     protected override async UniTask OnExit(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log("OnExit : " + state + (popped ? " (pop)" : ""));
         Release();
         OnActive(false);
         await UniTask.CompletedTask;
@@ -86,7 +84,6 @@ public class GachaStagingView : ViewBase, ISubscribe
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.Delay(TimeSpan.FromSeconds(1f), false, PlayerLoopTiming.Update, ct);
     }
 

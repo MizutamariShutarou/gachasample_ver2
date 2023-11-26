@@ -51,7 +51,7 @@ public class LoadingManager : MonoBehaviour
     public async UniTask ChangeSliderValue(float amount, CancellationToken ct)
     {
         _loadingImage.fillAmount = amount;
-        await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken:ct);
+        await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: ct);
     }
 
     private void ResetSliderValue()

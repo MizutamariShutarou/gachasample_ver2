@@ -1,6 +1,4 @@
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,8 +17,8 @@ public class GachaTopView : ViewBase, ISubscribe
     private Canvas _confirmationPanel;
 
     [SerializeField]
-    private Button _activeGachaConfirmationButton; 
-    
+    private Button _activeGachaConfirmationButton;
+
     [SerializeField]
     private Button _goGachaStagingButton;
 
@@ -46,7 +44,6 @@ public class GachaTopView : ViewBase, ISubscribe
     }
     protected override async UniTask OnEnter(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log("OnEnter : " + state + (popped ? " (pop)" : ""));
         OnActive(true);
         Subscribe();
         await UniTask.CompletedTask;
@@ -54,7 +51,6 @@ public class GachaTopView : ViewBase, ISubscribe
 
     protected override async UniTask OnExit(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log("OnExit : " + state + (popped ? " (pop)" : ""));
         Release();
         OnActive(false);
         await UniTask.CompletedTask;
@@ -62,18 +58,16 @@ public class GachaTopView : ViewBase, ISubscribe
 
     protected override async UniTask EnterRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
-        Debug.Log(state + " : ページをめくるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.CompletedTask;
     }
 
     protected override async UniTask ExitRoutine(Navigation.State state, bool popped, CancellationToken ct)
     {
         _confirmationPanel.gameObject.SetActive(false);
-        Debug.Log(state + " : ページがはけるアニメーションなど" + (popped ? " (pop)" : ""));
         await UniTask.CompletedTask;
     }
 
-    
+
     protected override void OnActive(bool flag)
     {
         _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
