@@ -8,12 +8,6 @@ public class GachaResultView : ViewBase, ISubscribe
 {
     private GachaScreenController _screenController = default;
 
-    [SerializeField, Header("State")]
-    private Navigation.State _state = Navigation.State.GachaTop;
-
-    [SerializeField, Header("Screen")]
-    private GachaScreenCollection.Screens _screen = GachaScreenCollection.Screens.GachaTop;
-
     [SerializeField]
     private GameObject _gachaIconBG = default;
 
@@ -41,7 +35,7 @@ public class GachaResultView : ViewBase, ISubscribe
 
     private void Start()
     {
-        Initialize(_state, _screenController.NavigationEntryPoint);
+        Initialize(Navigation.State.GachaResult, _screenController.NavigationEntryPoint);
         _screenController = GetComponent<GachaScreenController>();
         _interval = _firstAwaitTime;
     }
@@ -94,7 +88,7 @@ public class GachaResultView : ViewBase, ISubscribe
     }
     protected override void OnActive(bool flag)
     {
-        _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
+        _screenController.ScreenCollection.ScreenList[GachaScreenCollection.Screens.GachaResult].gameObject.SetActive(flag);
 
     }
     private async UniTask ShowResult()

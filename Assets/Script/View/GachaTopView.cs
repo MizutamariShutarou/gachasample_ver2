@@ -7,12 +7,6 @@ public class GachaTopView : ViewBase, ISubscribe
 {
     private GachaScreenController _screenController = default;
 
-    [SerializeField, Header("State")]
-    private Navigation.State _state = Navigation.State.GachaTop;
-
-    [SerializeField, Header("Screen")]
-    private GachaScreenCollection.Screens _screen = GachaScreenCollection.Screens.GachaTop;
-
     [SerializeField]
     private Canvas _confirmationPanel;
 
@@ -70,6 +64,6 @@ public class GachaTopView : ViewBase, ISubscribe
 
     protected override void OnActive(bool flag)
     {
-        _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
+        _screenController.ScreenCollection.ScreenList[GachaScreenCollection.Screens.GachaTop].gameObject.SetActive(flag);
     }
 }
