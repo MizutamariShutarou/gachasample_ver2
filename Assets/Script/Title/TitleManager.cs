@@ -35,7 +35,7 @@ public class TitleManager : MonoBehaviour, ISubscribe
         _titleCanvas.gameObject.SetActive(false);
         LoadingManager.Instance.ActiveLoadingWindow(true);
 
-        await LoadAssetData.Instance.LoadAllAssetBundles();
+        await LoadAssetData.Instance.LoadAssetBundles(AssetsName.weapon);
 
         var async = SceneChanger.Instance.ReturnAsyncOperation("DemoHomeScene");
 
