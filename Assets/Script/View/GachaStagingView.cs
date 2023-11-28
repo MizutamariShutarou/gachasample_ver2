@@ -8,12 +8,6 @@ public class GachaStagingView : ViewBase, ISubscribe
 {
     private GachaScreenController _screenController = default;
 
-    [SerializeField, Header("State")]
-    private Navigation.State _state = Navigation.State.GachaStaging;
-
-    [SerializeField, Header("Screen")]
-    private GachaScreenCollection.Screens _screen = GachaScreenCollection.Screens.GachaStaging;
-
     [SerializeField]
     private Button _doGachaButton = default;
 
@@ -27,7 +21,7 @@ public class GachaStagingView : ViewBase, ISubscribe
     }
     private void Start()
     {
-        Initialize(_state, _screenController.NavigationEntryPoint);
+        Initialize(Navigation.State.GachaStaging, _screenController.NavigationEntryPoint);
         _screenController = GetComponent<GachaScreenController>();
     }
     public void Subscribe()
@@ -102,7 +96,7 @@ public class GachaStagingView : ViewBase, ISubscribe
 
     protected override void OnActive(bool flag)
     {
-        _screenController.ScreenCollection.ScreenList[_screen].gameObject.SetActive(flag);
+        _screenController.ScreenCollection.ScreenList[GachaScreenCollection.Screens.GachaStaging].gameObject.SetActive(flag);
         _doGachaButton.gameObject.SetActive(flag);
     }
 }
