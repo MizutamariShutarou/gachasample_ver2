@@ -34,7 +34,7 @@ public class GachaController : MonoBehaviour
         if (LoadAssetData.Instance.Store[assetName] == null)
         {
             Debug.Log("データがないためダウンロードします");
-            await LoadAssetData.Instance.LoadNotLoadedData(assetName);
+            await LoadAssetData.Instance.LoadAssetBundles(assetName);
             Debug.Log("ダウンロード完了");
         }
     }

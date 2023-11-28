@@ -21,12 +21,8 @@ public class LoadAssetData
 
     public AssetBundleStore Store => _store;
 
-    public async UniTask LoadAllAssetBundles()
-    {
-        await _store.LoadAssetBundle(AssetsName.weapon);
-    }
-
-    public async UniTask LoadNotLoadedData(AssetsName assetName)
+    // 読み込む必要があるAssetBundleを読み込む
+    public async UniTask LoadAssetBundles(AssetsName assetName)
     {
         await _store.LoadAssetBundle(assetName);
     }
